@@ -3,19 +3,28 @@ using System.Collections;
 
 public class CameraScript : MonoBehaviour
 {
-    public GameObject player;
-    public Vector3 offset;
+    public GameObject Object2Follow;
+    public bool disableOtherCameras = true;
+    public Vector3 Offset = Vector3.zero;
 
 	// Use this for initialization
 	void Start ()
     {
-	
-	}
+        if (disableOtherCameras)
+        {
+            GameObject[] cameraArray = GameObject.FindGameObjectsWithTag("MainCamera");
+            foreach (GameObject c in cameraArray)
+            {
+                if (c != gameObject)
+                    c.SetActive(false);
+            }
+        }
+    }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        transform.position = player.transform.position + offset;
-        transform.rotation = new Quaternion(0, player.transform.rotation.y, 0, 0);
+        transform.position = Object2Follow.transform.position + Offset;
+        transform.rotation = new Quaternion(0, Object2Follow.transform.rotation.y, 0, 0);
 	}
 }

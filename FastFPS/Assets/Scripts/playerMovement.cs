@@ -11,7 +11,7 @@ public class playerMovement : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-        Debug.Log(Physics.gravity.ToString());
+        //Debug.Log(Physics.gravity.ToString());
         Physics.gravity = new Vector3(0, -20, 0);
         rb = GetComponent<Rigidbody>();
         if (fullBody != null)
