@@ -8,6 +8,7 @@ public class playerMovement : MonoBehaviour
     public Vector3 bodyOffset = Vector3.zero;
     private bool useExtBody = false;
 
+
 	// Use this for initialization
 	void Start ()
     {
@@ -33,10 +34,9 @@ public class playerMovement : MonoBehaviour
         //transform.position = new Vector3(transform.position.x, transform.FindChild("Sphere").position.y + 1.5f, transform.position.z);
 
         //jumping
-        if (Input.GetButton("Jump") && transform.FindChild("PlayerGroundCollider").GetComponent<GroundCollisionScript>().onGround)
+        if (Input.GetKeyDown("space")&& transform.FindChild("PlayerGroundCollider").GetComponent<GroundCollisionScript>().onGround)
             rb.velocity = new Vector3(rb.velocity.x, 20, rb.velocity.z);
-
-        //
+        
 
         //body
         if (useExtBody)
