@@ -10,10 +10,11 @@ public class PlayerBodyScript : MonoBehaviour
     private Ray raycast = new Ray();
     private RaycastHit rayHit;
 
-    private float hitPoints = 100;
+    public float HitPoints = 100;
+    public float Armor = 100;
     public byte weaponEquiped = 1;
     public float damageBoost = 0f;
-    public float damageTotal = 0f;
+    private float damageTotal = 0f;
 
 	// Use this for initialization
 	void Start ()
@@ -44,6 +45,6 @@ public class PlayerBodyScript : MonoBehaviour
 
     public void Hit(float dmg)
     {
-        hitPoints -= dmg;
+        HitPoints -= dmg;
     }
 }
