@@ -5,6 +5,7 @@ public class PlayerBodyScript : MonoBehaviour
 {
     public GameObject feetObject;
     private bool useExtFeet = false;
+    public Vector3 bodyOffset = Vector3.zero;
     public GameObject camera;
 
     private Ray raycast = new Ray();
@@ -41,6 +42,10 @@ public class PlayerBodyScript : MonoBehaviour
             if (rayHit.collider.gameObject.tag == "Enemy")
                 rayHit.collider.SendMessage("Hit", damageTotal);
         }
+
+        //body
+        if (useExtFeet)
+            transform.position = feetObject.transform.position + bodyOffset;
 	}
 
     public void Hit(float dmg)
