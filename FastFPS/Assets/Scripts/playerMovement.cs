@@ -12,6 +12,8 @@ public class playerMovement : MonoBehaviour
     public Vector3 bodyOffset = Vector3.zero;
     private bool useExtBody = false;
 
+    private float speed = 20;
+    private float jumpPower = 20;
 
 	// Use this for initialization
 	void Init ()
@@ -25,12 +27,14 @@ public class playerMovement : MonoBehaviour
             useExtBody = true;
             Physics.IgnoreCollision(playerBody.GetComponent<Collider>(), playerFeet.GetComponent<Collider>());
         }
+        speed = GetComponent<PlayerStats>().MaxSpeed;
+        jumpPower = GetComponent<PlayerStats>().JumpPower;
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-        //make sure the playe has spawned
+        //make sure the player has spawned
         if (player == null)
             return;
         else if (!playerInit)
@@ -44,12 +48,12 @@ public class playerMovement : MonoBehaviour
         /*Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         if (movement != Vector3.zero)
             GetComponent<CharacterController>().Move(movement);*/
-        rb.velocity = new Vector3(Input.GetAxis("Horizontal") * 20, rb.velocity.y, Input.GetAxis("Vertical") * 20);
+        rb.velocity = new Vector3(Input.GetAxis("Horizontal") * speed, rb.velocity.y, Input.GetAxis("Vertical") * speed);
         //transform.position = new Vector3(transform.position.x, transform.FindChild("Sphere").position.y + 1.5f, transform.position.z);
 
         //jumping
         if (Input.GetKeyDown("space") && playerFeet.transform.FindChild("PlayerGroundCollider").GetComponent<GroundCollisionScript>().onGround)
-            rb.velocity = new Vector3(rb.velocity.x, 20, rb.velocity.z);
+            rb.velocity = new Vector3(rb.velocity.x, jumpPower, rb.velocity.z);
         
 
         //body

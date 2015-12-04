@@ -11,11 +11,9 @@ public class PlayerBodyScript : MonoBehaviour
     private Ray raycast = new Ray();
     private RaycastHit rayHit;
 
-    public float HitPoints = 100;
-    public float Armor = 100;
-    public byte weaponEquiped = 1;
-    public float damageBoost = 0f;
-    private float damageTotal = 0f;
+    private int damage = 0;
+    private float RoF = 0.3f;
+    private float time = 0f;
 
 	// Use this for initialization
 	void Start ()
@@ -31,25 +29,29 @@ public class PlayerBodyScript : MonoBehaviour
 	void Update ()
     {
         transform.rotation.SetLookRotation(camera.transform.forward, transform.up);
+        RoF = GetComponent<PlayerStats>().RoF;
+        time += Time.deltaTime;
 
-        if (Input.GetMouseButtonDown(1))
+        //shooting
+        if (Input.GetMouseButtonDown(1) && time >= RoF)
         {
-            damageTotal = (float)weaponEquiped + damageBoost;
+            damage = GetComponent<PlayerStats>().Damage;
             raycast = new Ray(camera.transform.position, camera.transform.forward);
             GameObject bullet = (GameObject)Instantiate(Resources.Load<Object>("Bullet"), camera.transform.position + camera.transform.forward, camera.transform.rotation);
             bullet.GetComponent<BulletScript>().Init(raycast);
             Physics.Raycast(raycast, out rayHit);
             if (rayHit.collider.gameObject.tag == "Enemy")
-                rayHit.collider.SendMessage("Hit", damageTotal);
+                rayHit.collider.SendMessage("Hit", damage);
+            time = 0f;
         }
 
-        //body
+        //body positioning
         if (useExtFeet)
             transform.position = feetObject.transform.position + bodyOffset;
 	}
 
-    public void Hit(float dmg)
+    public void Hit(int dmg)
     {
-        HitPoints -= dmg;
+        GetComponent<PlayerStats>().MaxHitPoints -= dmg;
     }
 }
