@@ -4,11 +4,11 @@ using System.Collections;
 public class playerMovement : MonoBehaviour
 {
     public static GameObject player;
-    private GameObject playerFeet;
+    public GameObject playerFeet;
     private bool playerInit = false;
 
     Rigidbody rb;
-    public GameObject playerBody;
+    private GameObject playerBody;
     public Vector3 bodyOffset = Vector3.zero;
     private bool useExtBody = false;
 
@@ -19,6 +19,7 @@ public class playerMovement : MonoBehaviour
 	void Init ()
     {
         playerFeet = player.transform.FindChild("PlayerFeet").gameObject;
+        playerBody = player.transform.FindChild("PlayerBody").gameObject;
         //Debug.Log(Physics.gravity.ToString());
         Physics.gravity = new Vector3(0, -20, 0);
         rb = playerFeet.GetComponent<Rigidbody>();
@@ -27,8 +28,8 @@ public class playerMovement : MonoBehaviour
             useExtBody = true;
             Physics.IgnoreCollision(playerBody.GetComponent<Collider>(), playerFeet.GetComponent<Collider>());
         }
-        speed = GetComponent<PlayerStats>().MaxSpeed;
-        jumpPower = GetComponent<PlayerStats>().JumpPower;
+        speed = playerBody.GetComponent<PlayerStats>().MaxSpeed;
+        jumpPower = playerBody.GetComponent<PlayerStats>().JumpPower;
 	}
 	
 	// Update is called once per frame
