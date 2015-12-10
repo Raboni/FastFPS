@@ -8,6 +8,9 @@ public class PlayerBodyScript : MonoBehaviour
     public Vector3 bodyOffset = Vector3.zero;
     public GameObject camera;
 
+    private int HitPoints = 100;
+    private int Armor = 100;
+
     private Ray raycast = new Ray();
     private RaycastHit rayHit;
 
@@ -28,13 +31,12 @@ public class PlayerBodyScript : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        transform.rotation.SetLookRotation(camera.transform.forward, transform.up);
+        //transform.rotation.SetLookRotation(camera.transform.forward, transform.up);
         RoF = GetComponent<PlayerStats>().RoF;
         time += Time.deltaTime;
 
         //body positioning
-        if (useExtFeet)
-            transform.position = feetObject.transform.position + bodyOffset;
+        transform.position = feetObject.transform.position + bodyOffset;
 	}
 
     public void Shoot()
@@ -55,6 +57,6 @@ public class PlayerBodyScript : MonoBehaviour
     }
     public void Hit(int dmg)
     {
-        GetComponent<PlayerStats>().MaxHitPoints -= dmg;
+        HitPoints -= dmg;
     }
 }

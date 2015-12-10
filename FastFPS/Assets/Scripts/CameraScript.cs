@@ -26,6 +26,7 @@ public class CameraScript : MonoBehaviour
     {
         transform.position = Object2Follow.transform.position + Offset;
         //transform.rotation = new Quaternion(0, Object2Follow.transform.rotation.y, 0, 0); //DOES NOT WORK!!!!!!!!!!!!!!!!!!
-        transform.rotation = Object2Follow.transform.rotation;
+        Vector3 temp = new Vector3(transform.rotation.eulerAngles.x, Object2Follow.transform.rotation.eulerAngles.y, 0);
+        transform.rotation = Quaternion.Euler(temp);
 	}
 }

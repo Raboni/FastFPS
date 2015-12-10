@@ -6,7 +6,7 @@ public class PlayerLook : MonoBehaviour
     private bool playerInit = false;
     public static GameObject player;
     private GameObject playerBody;
-    private GameObject camera;
+    public GameObject camera;
 
     private Vector3 look;
     private Vector3 prevMousePos;
@@ -14,6 +14,8 @@ public class PlayerLook : MonoBehaviour
 	// Use this for initialization
 	void Init()
     {
+        //Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
         playerBody = player.transform.FindChild("PlayerBody").gameObject;
         camera = player.transform.FindChild("Main Camera").gameObject;
 	}
@@ -33,11 +35,13 @@ public class PlayerLook : MonoBehaviour
             playerInit = true;
         }
 
-        look = Input.mousePosition - prevMousePos;
-        camera.transform.Rotate(look.y, 0, look.x);
-        if (prevMousePos != Input.mousePosition)
-            Debug.Log("mouse change");
+        look = new Vector3(Input.mousePosition.x / Screen.width, Input.mousePosition.y / Screen.height, 0) * 400;
 
-        prevMousePos = Input.mousePosition;
+        Vector3 camEuler = camera.transform.rotation.eulerAngles;
+        camera.transform.rotation = Quaternion.Euler(-look.y, camEuler.y, 0);
+        playerBody.transform.rotation = Quaternion.Euler(0, look.x, 0);
+
+        if (Input.GetMouseButtonDown(0))
+            playerBody.GetComponent<PlayerBodyScript>().SendMessage("Shoot");
 	}
 }

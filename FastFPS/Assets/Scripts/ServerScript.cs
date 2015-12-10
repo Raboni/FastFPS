@@ -37,6 +37,7 @@ public class ServerScript : Photon.MonoBehaviour
         player = PhotonNetwork.Instantiate("PlayerObjects", Vector2.zero, Quaternion.identity, 0);
         playerMovement.player = player;
         PlayerLook.player = player;
+        CustomMouseLook.player = player;
         //MyThirdPersonController.player = NetworkPlayerController.player;
         //MyThirdPersonController.player.GetComponent<PlayerInfo>().ID = PhotonNetwork.countOfPlayersInRooms + 1;
     }

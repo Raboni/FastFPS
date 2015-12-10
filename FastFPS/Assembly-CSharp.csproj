@@ -106,10 +106,13 @@
      <Compile Include="Assets\Photon Unity Networking\UtilityScripts\TimeKeeper.cs" />
      <Compile Include="Assets\Scripts\BulletScript.cs" />
      <Compile Include="Assets\Scripts\CameraScript.cs" />
+     <Compile Include="Assets\Scripts\CustomMouseLook.cs" />
      <Compile Include="Assets\Scripts\GroundCollisionScript.cs" />
      <Compile Include="Assets\Scripts\NetworkManager.cs" />
      <Compile Include="Assets\Scripts\NetworkPlayer.cs" />
      <Compile Include="Assets\Scripts\PlayerBodyScript.cs" />
+     <Compile Include="Assets\Scripts\PlayerLook.cs" />
+     <Compile Include="Assets\Scripts\PlayerStats.cs" />
      <Compile Include="Assets\Scripts\ServerScript.cs" />
      <Compile Include="Assets\Scripts\playerMovement.cs" />
      <None Include="Assets\Plugins\Photon3Unity3D.xml" />

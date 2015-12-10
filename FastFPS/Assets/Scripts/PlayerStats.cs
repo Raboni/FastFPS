@@ -14,16 +14,18 @@ public class PlayerStats : MonoBehaviour
     public byte MaxClipSize = 10;
     public byte MaxClipAmount = 3;
     public float RoF = 0.3f;
+    public float ReloadSpeed = 2f;
+    public int Range = 100;
 
 	// Use this for initialization
 	void Start ()
     {
-	
+	    
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-	
+	    
 	}
 }
