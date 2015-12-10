@@ -4,11 +4,15 @@ using UnityEngine.Networking;
 
 public class ServerScript : Photon.MonoBehaviour
 {
-	
+    public bool Online = true;
+    GameObject player;
+
 	// Use this for initialization
 	void Start ()
 	{
-        PhotonNetwork.ConnectUsingSettings("Test 1.2");
+        PhotonNetwork.offlineMode = !Online;
+        if (Online)
+            PhotonNetwork.ConnectUsingSettings("Test 1.2");
     }
 
     void OnGUI()
@@ -19,7 +23,10 @@ public class ServerScript : Photon.MonoBehaviour
     //photon connection
     void OnConnectedToMaster()
     {
-        PhotonNetwork.JoinLobby();
+        if(!PhotonNetwork.autoJoinLobby)
+            PhotonNetwork.JoinLobby();
+        if (!Online)
+            PhotonNetwork.JoinOrCreateRoom("offline", new RoomOptions(), TypedLobby.Default);
     }
     void OnJoinedLobby()
     {
@@ -27,7 +34,9 @@ public class ServerScript : Photon.MonoBehaviour
     }
     void OnJoinedRoom()
     {
-        playerMovement.player = PhotonNetwork.Instantiate("PlayerObjects", Vector2.zero, Quaternion.identity, 0);
+        player = PhotonNetwork.Instantiate("PlayerObjects", Vector2.zero, Quaternion.identity, 0);
+        playerMovement.player = player;
+        PlayerLook.player = player;
         //MyThirdPersonController.player = NetworkPlayerController.player;
         //MyThirdPersonController.player.GetComponent<PlayerInfo>().ID = PhotonNetwork.countOfPlayersInRooms + 1;
     }

@@ -32,24 +32,27 @@ public class PlayerBodyScript : MonoBehaviour
         RoF = GetComponent<PlayerStats>().RoF;
         time += Time.deltaTime;
 
-        //shooting
-        if (Input.GetMouseButtonDown(1) && time >= RoF)
-        {
-            damage = GetComponent<PlayerStats>().Damage;
-            raycast = new Ray(camera.transform.position, camera.transform.forward);
-            GameObject bullet = (GameObject)Instantiate(Resources.Load<Object>("Bullet"), camera.transform.position + camera.transform.forward, camera.transform.rotation);
-            bullet.GetComponent<BulletScript>().Init(raycast);
-            Physics.Raycast(raycast, out rayHit);
-            if (rayHit.collider.gameObject.tag == "Enemy")
-                rayHit.collider.SendMessage("Hit", damage);
-            time = 0f;
-        }
-
         //body positioning
         if (useExtFeet)
             transform.position = feetObject.transform.position + bodyOffset;
 	}
 
+    public void Shoot()
+    {
+        //shooting
+        if (time >= RoF)
+        {
+            Debug.Log("Pew!");
+            damage = GetComponent<PlayerStats>().Damage;
+            raycast = new Ray(camera.transform.position, camera.transform.forward);
+            GameObject bullet = (GameObject)Instantiate(Resources.Load<Object>("Bullet"), camera.transform.position + camera.transform.forward, camera.transform.rotation);
+            bullet.GetComponent<BulletScript>().Init(raycast);
+            Physics.Raycast(raycast, out rayHit);
+            if (rayHit.collider.gameObject.tag == "Player")
+                rayHit.collider.SendMessage("Hit", damage);
+            time = 0f;
+        }
+    }
     public void Hit(int dmg)
     {
         GetComponent<PlayerStats>().MaxHitPoints -= dmg;
