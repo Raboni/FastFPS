@@ -7,18 +7,38 @@ public class CameraScript : MonoBehaviour
     public bool disableOtherCameras = true;
     public Vector3 Offset = Vector3.zero;
 
+    public static PhotonPlayer photonPlayer;
+
 	// Use this for initialization
-	void Start ()
+	void Awake ()
     {
-        if (disableOtherCameras)
+        if (playerMovement.player != null)
         {
-            GameObject[] cameraArray = GameObject.FindGameObjectsWithTag("MainCamera");
-            foreach (GameObject c in cameraArray)
-            {
-                if (c != gameObject)
-                    c.SetActive(false);
-            }
+            if (this == playerMovement.player.transform.FindChild("Main Camera").GetComponent<CameraScript>())
+                photonPlayer = PhotonNetwork.player;
+            else
+                gameObject.SetActive(false);
         }
+        else
+            gameObject.SetActive(false);
+
+        //GameObject[] cameraArray = GameObject.FindGameObjectsWithTag("MainCamera");
+        /*if (cameraArray.Length > 1) //does not work (second player camera gets disabled)
+        {
+            gameObject.SetActive(false);
+        }*/
+        /*if (playerMovement.player != null)
+        {
+            if (disableOtherCameras && gameObject == playerMovement.player.transform.FindChild("Main Camera"))
+            {
+                GameObject[] cameraArray = GameObject.FindGameObjectsWithTag("MainCamera");
+                foreach (GameObject c in cameraArray)
+                {
+                    if (c != gameObject)
+                        c.SetActive(false);
+                }
+            }
+        }*/
     }
 	
 	// Update is called once per frame

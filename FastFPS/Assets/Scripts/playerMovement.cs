@@ -49,13 +49,12 @@ public class playerMovement : MonoBehaviour
         /*Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         if (movement != Vector3.zero)
             GetComponent<CharacterController>().Move(movement);*/
-        rb.velocity = new Vector3(Input.GetAxis("Horizontal") * speed, rb.velocity.y, Input.GetAxis("Vertical") * speed);
+        rb.velocity = (playerBody.transform.forward * Input.GetAxis("Vertical") * speed) + (playerBody.transform.right * Input.GetAxis("Horizontal") * speed) + (playerBody.transform.up * rb.velocity.y);
         //transform.position = new Vector3(transform.position.x, transform.FindChild("Sphere").position.y + 1.5f, transform.position.z);
 
         //jumping
         if (Input.GetKeyDown("space") && playerFeet.transform.FindChild("PlayerGroundCollider").GetComponent<GroundCollisionScript>().onGround)
             rb.velocity = new Vector3(rb.velocity.x, jumpPower, rb.velocity.z);
-        
 
         //body
         //if (useExtBody)

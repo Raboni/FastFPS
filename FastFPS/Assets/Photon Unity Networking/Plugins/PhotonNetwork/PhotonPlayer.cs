@@ -146,7 +146,7 @@ public class PhotonPlayer
     }
 
     /// <summary>
-    /// Used internally, to update this client's playerID when assigned.
+    /// Used internally, to update this client's photonPlayer when assigned.
     /// </summary>
     internal void InternalChangeLocalID(int newID)
     {

@@ -12,7 +12,7 @@ public class ServerScript : Photon.MonoBehaviour
 	{
         PhotonNetwork.offlineMode = !Online;
         if (Online)
-            PhotonNetwork.ConnectUsingSettings("Test 1.2");
+            PhotonNetwork.ConnectUsingSettings("Pew 1.0");
     }
 
     void OnGUI()

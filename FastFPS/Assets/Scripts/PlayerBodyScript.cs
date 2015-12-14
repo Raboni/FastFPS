@@ -48,6 +48,9 @@ public class PlayerBodyScript : MonoBehaviour
             damage = GetComponent<PlayerStats>().Damage;
             raycast = new Ray(camera.transform.position, camera.transform.forward);
             GameObject bullet = (GameObject)Instantiate(Resources.Load<Object>("Bullet"), camera.transform.position + camera.transform.forward, camera.transform.rotation);
+            RaycastHit hit;
+            Physics.Raycast(new Ray(transform.position, -camera.transform.forward), out hit);
+            Debug.Log(hit.distance);
             bullet.GetComponent<BulletScript>().Init(raycast);
             Physics.Raycast(raycast, out rayHit);
             if (rayHit.collider.gameObject.tag == "Player")

@@ -20,14 +20,15 @@ public class BulletScript : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         //initialize the ray for raycasting and bullet direction
-        this.ray = ray;
+        this.ray = new Ray(transform.position + ray.direction, ray.direction);
         direction = ray.direction;
-        transform.rotation = Quaternion.Euler(direction);
+        transform.rotation = Quaternion.LookRotation(direction);
 
         //set speed and time acording to distance
         speed *= 1000;
         Physics.Raycast(ray, out rayHit);
         time = rayHit.distance / (speed * 0.00055f);
+        Debug.Log(rayHit.distance);
 
         //set velocity
         rb.AddForce(direction * speed);
