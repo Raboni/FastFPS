@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BulletScript : MonoBehaviour
+public class BulletScript : MonoBehaviour //by Robin
 {
     Rigidbody rb;
     public Vector3 direction = Vector3.zero;
@@ -24,7 +24,7 @@ public class BulletScript : MonoBehaviour
         direction = ray.direction;
         transform.rotation = Quaternion.LookRotation(direction);
 
-        //set speed and time acording to distance
+        //set speed and time acording to distance (need fix)
         speed *= 1000;
         Physics.Raycast(ray, out rayHit);
         time = rayHit.distance / (speed * 0.00055f);

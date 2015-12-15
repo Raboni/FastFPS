@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerLook : MonoBehaviour
+public class PlayerLook : MonoBehaviour //20% working script by Robin
 {
     private bool playerInit = false;
     public static GameObject player;

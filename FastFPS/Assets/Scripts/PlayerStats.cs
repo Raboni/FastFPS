@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerStats : MonoBehaviour
+public class PlayerStats : MonoBehaviour //by Robin and Kevin
 {
     //health
     public int MaxHitPoints = 100;

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class NetworkPlayer : Photon.MonoBehaviour
+public class NetworkPlayer : Photon.MonoBehaviour //by Quill18 modified by Robin
 {
     Vector3 realPos = Vector3.zero;
     Vector3 realVel = Vector3.zero;
@@ -23,6 +23,7 @@ public class NetworkPlayer : Photon.MonoBehaviour
         }
         else
         {
+            //smooth movement
             transform.position = Vector3.Lerp(transform.position, realPos, 0.1f);
             transform.rotation = Quaternion.Lerp(transform.rotation, realRot, 0.1f);
         }

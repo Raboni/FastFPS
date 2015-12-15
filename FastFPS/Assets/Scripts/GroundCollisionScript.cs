@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GroundCollisionScript : MonoBehaviour
+public class GroundCollisionScript : MonoBehaviour //by Robin
 {
     public bool onGround = false;
 

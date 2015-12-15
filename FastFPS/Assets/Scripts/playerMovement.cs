@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class playerMovement : MonoBehaviour
+public class playerMovement : MonoBehaviour //by Linus and Robin
 {
     public static GameObject player;
     public GameObject playerFeet;
@@ -18,16 +18,23 @@ public class playerMovement : MonoBehaviour
 	// Use this for initialization
 	void Init ()
     {
+        //get the feet and body
         playerFeet = player.transform.FindChild("PlayerFeet").gameObject;
         playerBody = player.transform.FindChild("PlayerBody").gameObject;
+
+        //set gravity and rigidbody
         //Debug.Log(Physics.gravity.ToString());
         Physics.gravity = new Vector3(0, -20, 0);
         rb = playerFeet.GetComponent<Rigidbody>();
+
+        //ignore collision between feet and body
         if (playerBody != null)
         {
             useExtBody = true;
             Physics.IgnoreCollision(playerBody.GetComponent<Collider>(), playerFeet.GetComponent<Collider>());
         }
+
+        //get speed and jump power
         speed = playerBody.GetComponent<PlayerStats>().MaxSpeed;
         jumpPower = playerBody.GetComponent<PlayerStats>().JumpPower;
 	}
@@ -56,7 +63,7 @@ public class playerMovement : MonoBehaviour
         if (Input.GetKeyDown("space") && playerFeet.transform.FindChild("PlayerGroundCollider").GetComponent<GroundCollisionScript>().onGround)
             rb.velocity = new Vector3(rb.velocity.x, jumpPower, rb.velocity.z);
 
-        //body
+        //body positioning
         //if (useExtBody)
             //playerBody.transform.position = playerFeet.transform.position + bodyOffset;
 	}

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerBodyScript : MonoBehaviour
+public class PlayerBodyScript : MonoBehaviour //by Robin
 {
     public GameObject feetObject;
     private bool useExtFeet = false;
@@ -21,6 +21,7 @@ public class PlayerBodyScript : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
+        //ignore collision between body and feet
         if (feetObject != null)
         {
             useExtFeet = true;
@@ -32,10 +33,12 @@ public class PlayerBodyScript : MonoBehaviour
 	void Update ()
     {
         //transform.rotation.SetLookRotation(camera.transform.forward, transform.up);
+
+        //Rate of Fire
         RoF = GetComponent<PlayerStats>().RoF;
         time += Time.deltaTime;
 
-        //body positioning
+        //body positioning (follow feet)
         transform.position = feetObject.transform.position + bodyOffset;
 	}
 
@@ -44,13 +47,13 @@ public class PlayerBodyScript : MonoBehaviour
         //shooting
         if (time >= RoF)
         {
-            Debug.Log("Pew!");
+            //Debug.Log("Pew!");
             damage = GetComponent<PlayerStats>().Damage;
             raycast = new Ray(camera.transform.position, camera.transform.forward);
             GameObject bullet = (GameObject)Instantiate(Resources.Load<Object>("Bullet"), camera.transform.position + camera.transform.forward, camera.transform.rotation);
-            RaycastHit hit;
+            /*RaycastHit hit;
             Physics.Raycast(new Ray(transform.position, -camera.transform.forward), out hit);
-            Debug.Log(hit.distance);
+            Debug.Log(hit.distance);*/
             bullet.GetComponent<BulletScript>().Init(raycast);
             Physics.Raycast(raycast, out rayHit);
             if (rayHit.collider.gameObject.tag == "Player")

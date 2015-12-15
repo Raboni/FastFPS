@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraScript : MonoBehaviour
+public class CameraScript : MonoBehaviour //by Robin
 {
     public GameObject Object2Follow;
     public bool disableOtherCameras = true;
@@ -19,7 +19,7 @@ public class CameraScript : MonoBehaviour
             else
                 gameObject.SetActive(false);
         }
-        else
+        else if (!PhotonNetwork.offlineMode)
             gameObject.SetActive(false);
 
         //GameObject[] cameraArray = GameObject.FindGameObjectsWithTag("MainCamera");
@@ -27,7 +27,7 @@ public class CameraScript : MonoBehaviour
         {
             gameObject.SetActive(false);
         }*/
-        /*if (playerMovement.player != null)
+        /*if (playerMovement.player != null) //no idea why it doesn't work
         {
             if (disableOtherCameras && gameObject == playerMovement.player.transform.FindChild("Main Camera"))
             {

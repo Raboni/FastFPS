@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CustomMouseLook : MonoBehaviour
+public class CustomMouseLook : MonoBehaviour //standard asset MouseLook script modified by Robin
 {
     public static GameObject player;
     private GameObject playerBody;
@@ -32,13 +32,15 @@ public class CustomMouseLook : MonoBehaviour
             playerInit = true;
         }
 
-        if (axes == RotationAxes.MouseXAndY)
+        if (axes == RotationAxes.MouseXAndY) //the one that matters most
         {
+            //set rotation
             float rotationX = playerBody.transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
 
             rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
             rotationY = Mathf.Clamp(rotationY, minimumY, maximumY);
 
+            //apply the rotation
             //transform.localEulerAngles = new Vector3(-rotationY, rotationX, 0);
             camera.transform.localEulerAngles = new Vector3(-rotationY, camera.transform.localEulerAngles.y, 0);
             playerBody.transform.localEulerAngles = new Vector3(playerBody.transform.localEulerAngles.x, rotationX, 0);
@@ -56,11 +58,12 @@ public class CustomMouseLook : MonoBehaviour
         }
 
         if (Input.GetMouseButtonDown(0))
-            playerBody.GetComponent<PlayerBodyScript>().SendMessage("Shoot");
+            playerBody.GetComponent<PlayerBodyScript>().SendMessage("Shoot"); //shoot via player body
     }
 
     void Init()
     {
+        //set body and camera
         playerBody = player.transform.FindChild("PlayerBody").gameObject;
         camera = player.transform.FindChild("Main Camera").gameObject;
 
