@@ -37,11 +37,19 @@ public class playerMovement : MonoBehaviour //by Linus and Robin
         //get speed and jump power
         speed = playerBody.GetComponent<PlayerStats>().MaxSpeed;
         jumpPower = playerBody.GetComponent<PlayerStats>().JumpPower;
+
+        Cursor.visible = false;
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Cursor.visible = !Cursor.visible;
+            Application.Quit();
+        }
+
         //make sure the player has spawned
         if (player == null)
             return;
