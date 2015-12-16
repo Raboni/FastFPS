@@ -19,7 +19,7 @@ public class CameraScript : MonoBehaviour //by Robin
             else
                 gameObject.SetActive(false);
         }
-        else if (!PhotonNetwork.offlineMode)
+        else if (!PhotonNetwork.offlineMode && transform.parent.gameObject == playerMovement.player)
             gameObject.SetActive(false);
 
         //GameObject[] cameraArray = GameObject.FindGameObjectsWithTag("MainCamera");
