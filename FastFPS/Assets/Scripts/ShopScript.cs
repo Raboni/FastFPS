@@ -14,9 +14,13 @@ public class ShopScript : MonoBehaviour {
     MeleeScript Fagger;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
         
-        if (Input.GetKeyDown("b") 
+        if (Input.GetKeyDown("b"))
+        {
+
+        }
         
    
         
