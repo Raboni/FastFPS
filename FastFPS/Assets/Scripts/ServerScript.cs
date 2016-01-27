@@ -6,6 +6,7 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
 {
     public bool Online = true;
     GameObject player;
+    int PlayerTeam = 0;
     public GameObject Camera2Disable;
 
 	// Use this for initialization
@@ -38,7 +39,7 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
     void OnJoinedRoom()
     {
         //create player on the network
-        player = PhotonNetwork.Instantiate("PlayerObjects", Vector2.zero, Quaternion.identity, 0);
+        player = PhotonNetwork.Instantiate("PlayerObjects", GetComponent<SpawnScript>().Respawn(PlayerTeam), Quaternion.identity, 0);
         playerMovement.player = player;
         PlayerLook.player = player;
         CustomMouseLook.player = player;
