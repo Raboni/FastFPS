@@ -8,13 +8,14 @@ public class PlayerBodyScript : MonoBehaviour //by Robin
     public Vector3 bodyOffset = Vector3.zero;
     public GameObject camera;
 
-    private int HitPoints = 100;
-    private int Armor = 100;
+    public int HitPoints = 100;
+    public int Armor = 100;
+    public int Ammo = 0;
 
     private Ray raycast = new Ray();
     private RaycastHit rayHit;
 
-    private int damage = 0;
+    private int damage = 1;
     private float RoF = 0.3f;
     private float time = 0f;
 
