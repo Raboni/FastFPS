@@ -8,10 +8,12 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
     GameObject player;
     int PlayerTeam = 0;
     public GameObject Camera2Disable;
+    public static GameObject scriptManager;
 
 	// Use this for initialization
 	void Start ()
 	{
+        scriptManager = gameObject;
         //connect if online
         PhotonNetwork.offlineMode = !Online;
         if (Online)
