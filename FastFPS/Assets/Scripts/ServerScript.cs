@@ -17,9 +17,8 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
         //connect if online
         PhotonNetwork.offlineMode = !Online;
         if (Online)
-            PhotonNetwork.ConnectUsingSettings("Pew 1.0.1");
+            PhotonNetwork.ConnectUsingSettings("Pew 1.0.2");
     }
-
     void OnGUI()
     {
         //draw connection state

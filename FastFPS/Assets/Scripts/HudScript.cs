@@ -1,20 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class HudScript : PlayerBodyScript {
-	GUIText myText;
+public class HudScript : MonoBehaviour {
+	GUIText myTextHP;
 	public int HitPoints = 100;
     public int Armor = 100;
     public int Ammo = 0;
 	// Use this for initialization
 	void Start () {
-		myText.text = HitPoints.ToString ();
-        myText.text = Armor.ToString();
-        myText.text = Ammo.ToString();
+		//get GUIText
+        myTextHP = ServerScript.scriptManager.GetComponent<GUIText>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+        //update values
+        HitPoints = GetComponent<PlayerBodyScript>().HitPoints;
+
+        //set text
+        myTextHP.text = HitPoints.ToString();
+
+        // V PLZ fix V
+        //myTextHP.text = Armor.ToString();
+        //myTextHP.text = Ammo.ToString();
 	}
 }
