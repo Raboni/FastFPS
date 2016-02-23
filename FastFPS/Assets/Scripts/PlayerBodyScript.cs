@@ -20,6 +20,8 @@ public class PlayerBodyScript : MonoBehaviour //by Robin
     private float RoF = 0.3f;
     private float time = 0f;
 
+    GameObject scriptManager;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -37,7 +39,7 @@ public class PlayerBodyScript : MonoBehaviour //by Robin
         //transform.rotation.SetLookRotation(camera.transform.forward, transform.up);
         if (HitPoints <= 0)
         {
-            transform.parent.position = GetComponent<SpawnScript>().Respawn(1);
+            transform.parent.position = scriptManager.GetComponent<SpawnScript>().Respawn(1);
             HitPoints = 100;
             Debug.Log("respawn");
         }
