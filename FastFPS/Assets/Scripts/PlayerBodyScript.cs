@@ -31,6 +31,7 @@ public class PlayerBodyScript : MonoBehaviour //by Robin
             useExtFeet = true;
             Physics.IgnoreCollision(feetObject.GetComponent<Collider>(), GetComponent<Collider>());
         }
+        scriptManager = GameObject.FindGameObjectWithTag("ScriptManager");
     }
 	
 	// Update is called once per frame
@@ -46,7 +47,7 @@ public class PlayerBodyScript : MonoBehaviour //by Robin
         }
 
         //Rate of Fire
-        RoF = GetComponent<PlayerStats>().RoF;
+        RoF = transform.parent.GetComponent<PlayerStats>().RoF;
         time += Time.deltaTime;
 
         //body positioning (follow feet)
@@ -58,8 +59,8 @@ public class PlayerBodyScript : MonoBehaviour //by Robin
         //shooting
         if (time >= RoF)
         {
-            //Debug.Log("Pew!");
-            damage = GetComponent<PlayerStats>().Damage;
+            Debug.Log("Pew!");
+            damage = transform.parent.GetComponent<PlayerStats>().Damage;
             raycast = new Ray(camera.transform.position + camera.transform.forward * 2, camera.transform.forward);
             GameObject bullet = (GameObject)Instantiate(Resources.Load<Object>("Bullet"), camera.transform.position + camera.transform.forward * 2, camera.transform.rotation);
             /*RaycastHit hit;
@@ -68,18 +69,11 @@ public class PlayerBodyScript : MonoBehaviour //by Robin
             bullet.GetComponent<BulletScript>().Init(raycast);
             Physics.Raycast(raycast, out rayHit);
             if (rayHit.collider.gameObject.tag == "Player")
-                rayHit.collider.SendMessage("Hit", new HitOptions(damage, rayHit.collider.transform.parent.GetComponent<PlayerStats>().clientPlayer));
+                PhotonNetwork.RPC(NetworkManager.view, "Hit", rayHit.collider.transform.parent.GetComponent<PlayerStats>().clientPlayer,
+                    false, new NetworkManager.HitOptions(damage));
+            /*PhotonNetwork.RPC(NetworkManager.view, "Hit", localPlayer,
+                    false, new NetworkManager.HitOptions(damage));*/
             time = 0f;
         }
-    }
-    public struct HitOptions
-    {
-        public HitOptions(int dmg, PhotonPlayer player)
-        {
-            this.damage = dmg;
-            this.player = player;
-        }
-        public int damage;
-        public PhotonPlayer player;
     }
 }

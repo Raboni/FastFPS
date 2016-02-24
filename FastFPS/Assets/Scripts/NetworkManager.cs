@@ -5,12 +5,13 @@ using System.Collections.Generic;
 public class NetworkManager : Photon.MonoBehaviour
 {
     public static List<PlayerKit> playerKitList = new List<PlayerKit>();
+    public static PhotonView view;
 
 	// Use this for initialization
 	void Start ()
     {
-        UpdatePlayerList();
-        PhotonNetwork.RPC(photonView, "UpdatePlayerList", PhotonTargets.All, false, null);
+        //UpdatePlayerList();
+        //PhotonNetwork.RPC(photonView, "UpdatePlayerList", PhotonTargets.All, false, null);
 	}
 	
 	// Update is called once per frame
@@ -28,7 +29,7 @@ public class NetworkManager : Photon.MonoBehaviour
             PlayerKit kit = new PlayerKit(PhotonNetwork.playerList[i], FindPlayerObject(PhotonNetwork.playerList[i]));
             playerKitList.Add(kit);
         }
-
+        view = photonView;
     }
     public GameObject GetPlayerObject(PhotonPlayer clientPlayer)
     {
@@ -47,6 +48,7 @@ public class NetworkManager : Photon.MonoBehaviour
             if (o.GetComponent<PlayerStats>().clientPlayer == clientPlayer)
                 return o;
         }
+        Debug.Log("Could Not Find Player");
         return null;
     }
 
@@ -61,22 +63,27 @@ public class NetworkManager : Photon.MonoBehaviour
         public GameObject Object;
     }
 
+    [PunRPC]
     public void Hit(HitOptions hit)
     {
-        GameObject playerBody = FindPlayerObject(hit.player).transform.FindChild("PlayerBody").gameObject;
+        Debug.Log("Hit");
+        GameObject playerBody = FindPlayerObject(PhotonNetwork.player).transform.FindChild("PlayerBody").gameObject;
         if (playerBody != null)
+        {
             playerBody.GetComponent<PlayerBodyScript>().HitPoints -= hit.damage;
+            Debug.Log("Ouch!");
+        }
         else
             Debug.Log("Unknown Target");
     }
     public struct HitOptions
     {
-        public HitOptions(int dmg, PhotonPlayer player)
+        public HitOptions(int dmg)//, PhotonPlayer player)
         {
             this.damage = dmg;
-            this.player = player;
+            //this.player = player;
         }
         public int damage;
-        public PhotonPlayer player;
+        //public PhotonPlayer player;
     }
 }

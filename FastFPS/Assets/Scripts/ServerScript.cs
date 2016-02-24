@@ -47,6 +47,7 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
         player.GetComponent<PlayerStats>().clientPlayer = PhotonNetwork.player;
         //MyThirdPersonController.clientPlayer = NetworkPlayerController.clientPlayer;
         //MyThirdPersonController.clientPlayer.GetComponent<PlayerInfo>().ID = PhotonNetwork.countOfPlayersInRooms + 1;
+        PhotonNetwork.RPC(photonView, "UpdatePlayerList", PhotonTargets.All, false, null);
 
         //disable starting camera
         Camera2Disable.SetActive(false);
