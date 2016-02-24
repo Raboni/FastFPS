@@ -3,6 +3,7 @@ using System.Collections;
 
 public class PlayerStats : MonoBehaviour //by Robin and Kevin
 {
+    public PhotonPlayer clientPlayer;
     //health
     public int MaxHitPoints = 100;
     public int MaxArmor = 100;

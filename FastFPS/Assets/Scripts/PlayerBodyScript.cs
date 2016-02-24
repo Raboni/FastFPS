@@ -36,6 +36,7 @@ public class PlayerBodyScript : MonoBehaviour //by Robin
 	// Update is called once per frame
 	void Update ()
     {
+        localPlayer = transform.parent.GetComponent<PlayerStats>().clientPlayer;
         //transform.rotation.SetLookRotation(camera.transform.forward, transform.up);
         if (HitPoints <= 0)
         {
@@ -67,14 +68,9 @@ public class PlayerBodyScript : MonoBehaviour //by Robin
             bullet.GetComponent<BulletScript>().Init(raycast);
             Physics.Raycast(raycast, out rayHit);
             if (rayHit.collider.gameObject.tag == "Player")
-                rayHit.collider.SendMessage("Hit", new HitOptions(damage, rayHit.collider.GetComponent<PlayerBodyScript>().localPlayer));
+                rayHit.collider.SendMessage("Hit", new HitOptions(damage, rayHit.collider.transform.parent.GetComponent<PlayerStats>().clientPlayer));
             time = 0f;
         }
-    }
-    public void Hit(HitOptions hit)
-    {
-        if (hit.player != PhotonNetwork.player)
-            HitPoints -= hit.damage;
     }
     public struct HitOptions
     {

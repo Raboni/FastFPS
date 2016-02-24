@@ -39,13 +39,14 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
     }
     void OnJoinedRoom()
     {
-        //create player on the network
+        //create clientPlayer on the network
         player = PhotonNetwork.Instantiate("PlayerObjects", GetComponent<SpawnScript>().Respawn(PlayerTeam), Quaternion.identity, 0);
         playerMovement.player = player;
         PlayerLook.player = player;
         CustomMouseLook.player = player;
-        //MyThirdPersonController.player = NetworkPlayerController.player;
-        //MyThirdPersonController.player.GetComponent<PlayerInfo>().ID = PhotonNetwork.countOfPlayersInRooms + 1;
+        player.GetComponent<PlayerStats>().clientPlayer = PhotonNetwork.player;
+        //MyThirdPersonController.clientPlayer = NetworkPlayerController.clientPlayer;
+        //MyThirdPersonController.clientPlayer.GetComponent<PlayerInfo>().ID = PhotonNetwork.countOfPlayersInRooms + 1;
 
         //disable starting camera
         Camera2Disable.SetActive(false);
@@ -56,7 +57,7 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
     }
     void OnPhotonPlayerDisconnected(PhotonPlayer other)
     {
-        //find other player with id and destroy him
+        //find other clientPlayer with id and destroy him
         PhotonNetwork.DestroyPlayerObjects(other);
     }
 }
