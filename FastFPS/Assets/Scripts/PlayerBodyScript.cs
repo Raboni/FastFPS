@@ -1,17 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerBodyScript : MonoBehaviour //by Robin
+public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
 {
     public GameObject feetObject;
     private bool useExtFeet = false;
     public Vector3 bodyOffset = Vector3.zero;
     public GameObject camera;
     public PhotonPlayer localPlayer;
-
-    public int HitPoints = 100;
-    public int Armor = 100;
-    public int Ammo = 0;
 
     private Ray raycast = new Ray();
     private RaycastHit rayHit;
@@ -39,12 +35,6 @@ public class PlayerBodyScript : MonoBehaviour //by Robin
     {
         localPlayer = transform.parent.GetComponent<PlayerStats>().clientPlayer;
         //transform.rotation.SetLookRotation(camera.transform.forward, transform.up);
-        if (HitPoints <= 0)
-        {
-            transform.parent.position = scriptManager.GetComponent<SpawnScript>().Respawn(1);
-            HitPoints = 100;
-            Debug.Log("respawn");
-        }
 
         //Rate of Fire
         RoF = transform.parent.GetComponent<PlayerStats>().RoF;
@@ -68,12 +58,39 @@ public class PlayerBodyScript : MonoBehaviour //by Robin
             Debug.Log(hit.distance);*/
             bullet.GetComponent<BulletScript>().Init(raycast);
             Physics.Raycast(raycast, out rayHit);
-            if (rayHit.collider.gameObject.tag == "Player")
-                PhotonNetwork.RPC(NetworkManager.view, "Hit", rayHit.collider.transform.parent.GetComponent<PlayerStats>().clientPlayer,
-                    false, new NetworkManager.HitOptions(damage));
+            if (rayHit.transform.tag == "Player")
+                rayHit.transform.GetComponent<PlayerBodyScript>().GetComponent<PhotonView>().RPC("HitPlayer", PhotonTargets.All, damage);
+            else if (rayHit.transform.tag == "Target")
+                rayHit.transform.GetComponent<TargetScript>().GetComponent<PhotonView>().RPC("Hit", PhotonTargets.All, damage);
+            else
+                Debug.Log("Unknown target: " + rayHit.transform.name);
             /*PhotonNetwork.RPC(NetworkManager.view, "Hit", localPlayer,
                     false, new NetworkManager.HitOptions(damage));*/
             time = 0f;
         }
     }
+    [PunRPC]
+    public void HitPlayer(int amt)
+    {
+        Debug.Log("Hit");
+        transform.parent.GetComponent<PlayerStats>().HitPoints -= amt;
+        /*GameObject player = playerMovement.player;
+        if (player != null)
+        {
+            player.GetComponent<PlayerStats>().HitPoints -= hit.damage;
+            Debug.Log("Ouch!");
+        }
+        else
+            Debug.Log("Unknown Target");*/
+    }
+    /*public struct HitOptions
+    {
+        public HitOptions(int dmg)//, PhotonPlayer player)
+        {
+            this.damage = dmg;
+            //this.player = player;
+        }
+        public int damage;
+        //public PhotonPlayer player;
+    }*/
 }

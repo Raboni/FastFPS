@@ -29,6 +29,7 @@ public class NetworkManager : Photon.MonoBehaviour
             PlayerKit kit = new PlayerKit(PhotonNetwork.playerList[i], FindPlayerObject(PhotonNetwork.playerList[i]));
             playerKitList.Add(kit);
         }
+        Debug.Log("Upddated Player List");
         view = photonView;
     }
     public GameObject GetPlayerObject(PhotonPlayer clientPlayer)
@@ -61,29 +62,5 @@ public class NetworkManager : Photon.MonoBehaviour
         }
         public PhotonPlayer Photon;
         public GameObject Object;
-    }
-
-    [PunRPC]
-    public void Hit(HitOptions hit)
-    {
-        Debug.Log("Hit");
-        GameObject playerBody = FindPlayerObject(PhotonNetwork.player).transform.FindChild("PlayerBody").gameObject;
-        if (playerBody != null)
-        {
-            playerBody.GetComponent<PlayerBodyScript>().HitPoints -= hit.damage;
-            Debug.Log("Ouch!");
-        }
-        else
-            Debug.Log("Unknown Target");
-    }
-    public struct HitOptions
-    {
-        public HitOptions(int dmg)//, PhotonPlayer player)
-        {
-            this.damage = dmg;
-            //this.player = player;
-        }
-        public int damage;
-        //public PhotonPlayer player;
     }
 }

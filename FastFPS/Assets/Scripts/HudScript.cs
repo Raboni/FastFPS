@@ -15,10 +15,10 @@ public class HudScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         //update values
-        HitPoints = GetComponent<PlayerBodyScript>().HitPoints;
+        HitPoints = GetComponent<PlayerStats>().HitPoints;
 
         //set text
-        myTextHP.text = HitPoints.ToString();
+        myTextHP.text = GetComponent<PlayerStats>().HitPoints.ToString();
 
         // V PLZ fix V
         //myTextHP.text = Armor.ToString();

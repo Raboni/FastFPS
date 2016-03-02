@@ -14,6 +14,7 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
 	void Start ()
 	{
         scriptManager = gameObject;
+        GetComponent<ServerScript>().SendMessage("UpdateSpawns");
         //connect if online
         PhotonNetwork.offlineMode = !Online;
         if (Online)
@@ -40,7 +41,7 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
     void OnJoinedRoom()
     {
         //create clientPlayer on the network
-        player = PhotonNetwork.Instantiate("PlayerObjects", GetComponent<SpawnScript>().Respawn(PlayerTeam), Quaternion.identity, 0);
+        player = PhotonNetwork.Instantiate("PlayerObjects", SpawnScript.Respawn(PlayerTeam), Quaternion.identity, 0);
         playerMovement.player = player;
         PlayerLook.player = player;
         CustomMouseLook.player = player;
