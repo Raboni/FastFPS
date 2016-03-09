@@ -35,8 +35,8 @@ public class playerMovement : MonoBehaviour //by Linus and Robin
         }
 
         //get speed and jump power
-        speed = playerBody.GetComponent<PlayerStats>().MaxSpeed;
-        jumpPower = playerBody.GetComponent<PlayerStats>().JumpPower;
+        speed = player.GetComponent<PlayerStats>().MaxSpeed;
+        jumpPower = player.GetComponent<PlayerStats>().JumpPower;
 
         Cursor.visible = false;
 	}
@@ -50,7 +50,7 @@ public class playerMovement : MonoBehaviour //by Linus and Robin
             Application.Quit();
         }
 
-        //make sure the player has spawned
+        //make sure the clientPlayer has spawned
         if (player == null)
             return;
         else if (!playerInit)

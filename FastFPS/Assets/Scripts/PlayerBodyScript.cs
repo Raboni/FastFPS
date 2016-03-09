@@ -46,11 +46,15 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
 
     public void Shoot()
     {
+        PlayerStats stats = transform.parent.GetComponent<PlayerStats>();
+
         //shooting
         if (time >= RoF)
         {
             Debug.Log("Pew!");
-            damage = transform.parent.GetComponent<PlayerStats>().Damage;
+            stats.Ammo--;
+            damage = stats.Damage;
+
             raycast = new Ray(camera.transform.position + camera.transform.forward * 2, camera.transform.forward);
             GameObject bullet = (GameObject)Instantiate(Resources.Load<Object>("Bullet"), camera.transform.position + camera.transform.forward * 2, camera.transform.rotation);
             /*RaycastHit hit;
@@ -68,12 +72,32 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
                     false, new NetworkManager.HitOptions(damage));*/
             time = 0f;
         }
+        if (stats.Ammo <= 0)
+        {
+            Reload();
+        }
+    }
+    private void Reload()
+    {
+        PlayerStats stats = transform.parent.GetComponent<PlayerStats>();
+        stats.Ammo = stats.ClipSize;
+        stats.ClipAmount--;
+        time = -10f;
     }
     [PunRPC]
     public void HitPlayer(int amt)
     {
         Debug.Log("Hit");
-        transform.parent.GetComponent<PlayerStats>().HitPoints -= amt;
+        PlayerStats stats = transform.parent.GetComponent<PlayerStats>();
+        if (stats.Armor > 0)
+        {
+            stats.HitPoints -= amt / 2;
+            stats.Armor -= amt;
+        }
+        else
+        {
+            stats.HitPoints -= amt;
+        }
         /*GameObject player = playerMovement.player;
         if (player != null)
         {
