@@ -46,6 +46,7 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
         PlayerLook.player = player;
         CustomMouseLook.player = player;
         player.GetComponent<PlayerStats>().clientPlayer = PhotonNetwork.player;
+        player.transform.FindChild("PlayerBody").GetComponent<PlayerBodyScript>().SetLocal();
         //MyThirdPersonController.clientPlayer = NetworkPlayerController.clientPlayer;
         //MyThirdPersonController.clientPlayer.GetComponent<PlayerInfo>().ID = PhotonNetwork.countOfPlayersInRooms + 1;
         PhotonNetwork.RPC(photonView, "UpdatePlayerList", PhotonTargets.All, false, null);
