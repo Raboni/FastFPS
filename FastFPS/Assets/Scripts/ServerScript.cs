@@ -4,26 +4,58 @@ using UnityEngine.Networking;
 
 public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
 {
-    public bool Online = true;
+    //public bool Online = true;
     GameObject player;
     int PlayerTeam = 0;
     public GameObject Camera2Disable;
     public static GameObject scriptManager;
+    bool connecting = false;
 
 	// Use this for initialization
 	void Start ()
 	{
         scriptManager = gameObject;
         GetComponent<ServerScript>().SendMessage("UpdateSpawns");
-        //connect if online
-        PhotonNetwork.offlineMode = !Online;
-        if (Online)
-            PhotonNetwork.ConnectUsingSettings("Pew 1.0.2");
+        PhotonNetwork.player.name = PlayerPrefs.GetString("Username", "Player");
+    }
+    void OnDestroy()
+    {
+        PlayerPrefs.SetString("Username", PhotonNetwork.player.name);
     }
     void OnGUI()
     {
         //draw connection state
         GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
+
+        //draw menu
+        if (!PhotonNetwork.connected && !connecting)
+        {
+            //GUI
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Username: ");
+            PhotonNetwork.player.name = GUILayout.TextField(PhotonNetwork.player.name);
+            GUILayout.EndHorizontal();
+
+            if (GUILayout.Button("Single Player"))
+            {
+                connecting = true;
+                PhotonNetwork.offlineMode = true;
+                OnJoinedLobby();
+            }
+            else if (GUILayout.Button("Multi Player"))
+            {
+                connecting = true;
+                PhotonNetwork.offlineMode = false;
+                Connect();
+            }
+        }
+    }
+    void Connect()
+    {
+        //connect if online
+        //PhotonNetwork.offlineMode = !Online;
+        //if (Online)
+            PhotonNetwork.ConnectUsingSettings("Pew 1.0.2");
     }
 	
     //photon connection
@@ -31,7 +63,7 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
     {
         if(!PhotonNetwork.autoJoinLobby)
             PhotonNetwork.JoinLobby();
-        if (!Online)
+        if (PhotonNetwork.offlineMode)
             PhotonNetwork.JoinOrCreateRoom("offline", new RoomOptions(), TypedLobby.Default);
     }
     void OnJoinedLobby()

@@ -6,6 +6,7 @@ public class NetworkPlayer : Photon.MonoBehaviour //by Quill18 modified by Robin
     Vector3 realPos = Vector3.zero;
     Vector3 realVel = Vector3.zero;
     Quaternion realRot = Quaternion.identity;
+    bool gotFirstUpdate = false;
     Ping ping = new Ping(MasterServer.ipAddress);
 
     // Use this for initialization
@@ -42,6 +43,14 @@ public class NetworkPlayer : Photon.MonoBehaviour //by Quill18 modified by Robin
             realPos = (Vector3)stream.ReceiveNext();
             realVel = (Vector3)stream.ReceiveNext();
             realRot = (Quaternion)stream.ReceiveNext();
+
+            if (!gotFirstUpdate)
+            {
+                transform.position = realPos;
+                GetComponent<Rigidbody>().velocity = Vector3.zero;
+                transform.rotation = realRot;
+                gotFirstUpdate = true;
+            }
         }
     }
 }
