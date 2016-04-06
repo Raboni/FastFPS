@@ -24,7 +24,7 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
 
     public float Speed = 20;
 
-    //weapon
+    //weapon stats
     private int defaultDamage = 10;
     private byte defaultMaxClipAmount = 3;
     private byte defaultClipSize = 3;
@@ -41,6 +41,19 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
 
     public byte ClipAmount = 3;
     public byte Ammo = 10;
+
+    //weapon equiped
+    WeaponScript equipedRanged;
+    public WeaponScript primaryRanged;
+    public WeaponScript secondaryRanged;
+
+    MeleeScript equipedMelee;
+    public MeleeScript secondaryMelee;
+    public MeleeScript primaryMelee;
+
+    //shop
+    bool[] perksBought = new bool[2];
+    public int credits = 100;
 
 	// Use this for initialization
 	void Start ()

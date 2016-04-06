@@ -62,10 +62,11 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
             Debug.Log("Pew!");
             stats.Ammo--;
             damage = stats.Damage;
-            bool kill = false;
-            object[] hitParam = new object[2];
+            //bool kill = false;
+            object[] hitParam = new object[3];
             hitParam[0] = damage;
-            hitParam[1] = kill;
+            hitParam[1] = PhotonNetwork.player;
+            hitParam[2] = transform;
 
             raycast = new Ray(camera.transform.position + camera.transform.forward * 2, camera.transform.forward);
             GameObject bullet = (GameObject)Instantiate(Resources.Load<Object>("Bullet"), camera.transform.position + camera.transform.forward * 2, camera.transform.rotation);
@@ -77,7 +78,7 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
             if (rayHit.transform == transform)
                 Debug.Log("STOP HITTING YOURSELF!");
             if (rayHit.transform.tag == "Player")
-                rayHit.transform.GetComponent<PlayerBodyScript>().GetComponent<PhotonView>().RPC("HitPlayer", PhotonTargets.All, hitParam);
+                rayHit.transform.GetComponent<PlayerBodyScript>().GetComponent<PhotonView>().RPC("HitPlayer", PhotonTargets.AllBuffered, hitParam);
             else if (rayHit.transform.tag == "Target")
                 rayHit.transform.GetComponent<TargetScript>().GetComponent<PhotonView>().RPC("Hit", PhotonTargets.All, damage);
             else
@@ -86,11 +87,11 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
                     false, new NetworkManager.HitOptions(damage));*/
 
             //score check
-            if (kill)
+            /*if (kill)
             {
                 PhotonNetwork.player.AddScore(1);
                 kill = false;
-            }
+            }*/
 
             time = 0f;
         }
@@ -107,7 +108,7 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
         time = -10f;
     }
     [PunRPC]
-    public void HitPlayer(int amt, out bool died)
+    public void HitPlayer(int amt, PhotonPlayer playerSent, Transform playerSentBody)
     {
         //bool died;
         Debug.Log("Hit");
@@ -122,9 +123,7 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
             stats.HitPoints -= amt;
         }
         if (stats.HitPoints <= 0)
-            died = true;
-        else
-            died = false;
+            playerSentBody.GetComponent<PhotonView>().RPC("KilledPlayer", playerSent, null);
         /*GameObject player = playerMovement.player;
         if (player != null)
         {
@@ -133,6 +132,11 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
         }
         else
             Debug.Log("Unknown Target");*/
+    }
+    [PunRPC]
+    public void KilledPlayer()
+    {
+        PhotonNetwork.player.AddScore(1);
     }
     /*public struct HitOptions
     {
