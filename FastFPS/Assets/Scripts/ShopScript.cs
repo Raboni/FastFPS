@@ -6,8 +6,8 @@ public class ShopScript : MonoBehaviour
 {
     public PlayerStats playerStats;
 
-    // Ranged Weapons
-    public WeaponScript Pistol;
+    //Ranged Weapons
+    public WeaponScript Pistol;//note from Robin: en weapon list kanske?
     WeaponScript Assault;
     WeaponScript Sniper;
     WeaponScript Smg;
@@ -43,13 +43,13 @@ public class ShopScript : MonoBehaviour
             GUILayout.BeginVertical();
             GUILayout.FlexibleSpace();
             //pistol
-            if (!Pistol.bought)
+            if (!Pistol.Bought)
             {
                 if (GUILayout.Button("Pistol (10$)") && playerStats.credits >= 10)
                 {
                     playerStats.primaryRanged = Pistol;
                     playerStats.credits -= 10;
-                    Pistol.bought = true;
+                    Pistol.Bought = true;
                 }
             }
             else
@@ -60,13 +60,13 @@ public class ShopScript : MonoBehaviour
                 }
             }
             //sniper
-            if (!Sniper.bought)
+            if (!Sniper.Bought)
             {
                 if (GUILayout.Button("Sniper (50$)") && playerStats.credits >= 50)
                 {
                     playerStats.primaryRanged = Sniper;
                     playerStats.credits -= 50;
-                    Sniper.bought = true;
+                    Sniper.Bought = true;
                 }
             }
             else

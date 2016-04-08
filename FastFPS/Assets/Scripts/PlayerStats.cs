@@ -38,6 +38,7 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
     public float RoF = 0.3f;
     public float ReloadSpeed = 2f;
     public int Range = 100;
+    public bool ArmorPenetration = false;
 
     public byte ClipAmount = 3;
     public byte Ammo = 10;
@@ -73,6 +74,13 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
             Debug.Log("respawn");
         }
 	}
+    public void UpdateMax()
+    {
+        ResetMax();
+
+        //set perks & weapon stats
+        SetWeaponStats(equipedRanged);
+    }
 
     private void ResetMax()
     {
@@ -89,10 +97,22 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
         ReloadSpeed = defaultReloadSpeed;
         Range = defaultRange;
     }
-    public void UpdateMax()
+    private void SetWeaponStats(WeaponScript weapon)
     {
-        ResetMax();
-        
-        //set perks & weapon stats
+        Damage = weapon.Damage;
+        ClipAmount = weapon.MaxClipAmount;
+        ClipSize = weapon.MaxClipSize;
+        RoF = weapon.RoF;
+        ReloadSpeed = weapon.ReloadSpeed;
+        Range = weapon.Range;
+    }
+    private void SetWeaponStats(MeleeScript weapon)
+    {
+        Damage = weapon.Damage;
+        ClipAmount = 1;
+        ClipSize = 1;
+        RoF = weapon.RoF;
+        ReloadSpeed = 0;
+        Range = weapon.Range;
     }
 }

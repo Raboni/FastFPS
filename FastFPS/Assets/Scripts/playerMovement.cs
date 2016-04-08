@@ -68,8 +68,10 @@ public class playerMovement : MonoBehaviour //by Linus and Robin
         //transform.position = new Vector3(transform.position.x, transform.FindChild("Sphere").position.y + 1.5f, transform.position.z);
 
         //jumping
-        if (Input.GetKeyDown("space") && playerFeet.transform.FindChild("PlayerGroundCollider").GetComponent<GroundCollisionScript>().onGround)
+        if (Input.GetButtonDown("Jump") && playerFeet.transform.FindChild("PlayerGroundCollider").GetComponent<GroundCollisionScript>().onGround)
+        {
             rb.velocity = new Vector3(rb.velocity.x, jumpPower, rb.velocity.z);
+        }
 
         //body positioning
         //if (useExtBody)
