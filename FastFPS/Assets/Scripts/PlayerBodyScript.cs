@@ -13,8 +13,8 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
     private Ray raycast = new Ray();
     private RaycastHit rayHit;
 
-    private int damage = 1;
-    private float RoF = 0.3f;
+    //private int damage = 1;
+    //private float RoF = 0.3f;
     private float time = 0f;
 
     GameObject scriptManager;
@@ -38,7 +38,7 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
         //transform.rotation.SetLookRotation(camera.transform.forward, transform.up);
 
         //Rate of Fire
-        RoF = transform.parent.GetComponent<PlayerStats>().RoF;
+        //RoF = transform.parent.GetComponent<PlayerStats>().RoF;
         time += Time.deltaTime;
 
         //body positioning (follow feet)
@@ -55,22 +55,23 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
     public void Shoot()
     {
         PlayerStats stats = transform.parent.GetComponent<PlayerStats>();
-        GlobalScript global = scriptManager.GetComponent<GlobalScript>();
+        GlobalScript global = scriptManager.GetComponent<ServerScript>().GlobalObject.GetComponent<GlobalScript>();
 
         //shooting
-        if (time >= RoF)
+        if (time >= stats.RoF)
         {
             Debug.Log("Pew!");
             stats.Ammo--;
-            damage = stats.Damage;
+            //damage = stats.Damage;
             //bool kill = false;
             object[] hitParam = new object[2];
-            hitParam[0] = damage;
+            hitParam[0] = stats.Damage;
             hitParam[1] = global.GetPlayerId(PhotonNetwork.player);
             //hitParam[1] = transform;
 
             raycast = new Ray(camera.transform.position + camera.transform.forward * 2, camera.transform.forward);
-            GameObject bullet = (GameObject)Instantiate(Resources.Load<Object>("Bullet"), camera.transform.position + camera.transform.forward * 2, camera.transform.rotation);
+            //GameObject bullet = (GameObject)Instantiate(Resources.Load<Object>("Bullet"), camera.transform.position + camera.transform.forward * 2, camera.transform.rotation);
+            GameObject bullet = PhotonNetwork.Instantiate("Bullet", camera.transform.position + camera.transform.forward * 2, camera.transform.rotation, 0);
             /*RaycastHit hit;
             Physics.Raycast(new Ray(transform.position, -camera.transform.forward), out hit);
             Debug.Log(hit.distance);*/
@@ -79,9 +80,9 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
             if (rayHit.transform == transform)
                 Debug.Log("STOP HITTING YOURSELF!");
             if (rayHit.transform.tag == "Player")
-                rayHit.transform.GetComponent<PlayerBodyScript>().GetComponent<PhotonView>().RPC("HitPlayer", PhotonTargets.AllBuffered, hitParam);
+                rayHit.transform.GetComponent<PlayerBodyScript>().GetComponent<PhotonView>().RPC("HitPlayer", PhotonTargets.AllBufferedViaServer, hitParam);
             else if (rayHit.transform.tag == "Target")
-                rayHit.transform.GetComponent<TargetScript>().GetComponent<PhotonView>().RPC("Hit", PhotonTargets.All, damage);
+                rayHit.transform.GetComponent<TargetScript>().GetComponent<PhotonView>().RPC("Hit", PhotonTargets.All, stats.Damage);
             else
                 Debug.Log("Unknown target: " + rayHit.transform.name);
             /*PhotonNetwork.RPC(NetworkManager.view, "Hit", localPlayer,
@@ -106,14 +107,14 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
         PlayerStats stats = transform.parent.GetComponent<PlayerStats>();
         stats.Ammo = stats.ClipSize;
         stats.ClipAmount--;
-        time = -10f;
+        time = -stats.ReloadSpeed;
     }
     [PunRPC]
     public void HitPlayer(int amt, int playerSentId)//, PhotonPlayer playerSent, Transform playerSentBody)
     {
         Debug.Log("Hit");
         PlayerStats stats = transform.parent.GetComponent<PlayerStats>();
-        GlobalScript global = scriptManager.GetComponent<GlobalScript>();
+        GlobalScript global = scriptManager.GetComponent<ServerScript>().GlobalObject.GetComponent<GlobalScript>();
         int playerRecievedId = global.GetPlayerId(PhotonNetwork.player);
         if (stats.Armor > 0 && !stats.ArmorPenetration)
         {
@@ -126,10 +127,12 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
         }
         if (stats.HitPoints <= 0)
         {
+            Debug.Log("player:" + playerSentId + " Killed player:" + playerRecievedId);
             //playerSentBody.GetComponent<PhotonView>().RPC("KilledPlayer", playerSent, null);
             if (playerSentId != 255)
             {
-                PhotonNetwork.playerList[playerSentId].AddScore(100);
+                //PhotonNetwork.playerList[playerSentId].AddScore(100);
+                
                 global.PlayerKills[playerSentId]++;
                 if (playerRecievedId != 255)
                     global.PlayerDeaths[playerRecievedId]++;

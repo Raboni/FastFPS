@@ -9,6 +9,7 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
     int PlayerTeam = 0;
     public GameObject Camera2Disable;
     public static GameObject scriptManager;
+    public GameObject GlobalObject;
     bool connecting = false;
 
 	// Use this for initialization
@@ -79,14 +80,25 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
         CustomMouseLook.player = player;
         player.GetComponent<PlayerStats>().clientPlayer = PhotonNetwork.player;
         player.transform.FindChild("PlayerBody").GetComponent<PlayerBodyScript>().SetLocal();
-        //MyThirdPersonController.clientPlayer = NetworkPlayerController.clientPlayer;
-        //MyThirdPersonController.clientPlayer.GetComponent<PlayerInfo>().ID = PhotonNetwork.countOfPlayersInRooms + 1;
-        PhotonNetwork.RPC(photonView, "UpdatePlayerList", PhotonTargets.All, false, null);
-
         //disable starting camera
         Camera2Disable.SetActive(false);
 
-        GetComponent<ShopScript>().init();
+        //GameObject[] g = GameObject.FindGameObjectsWithTag("Global");
+        GameObject g = GameObject.FindWithTag("Global");
+        if (g != null)
+        {
+            GlobalObject = g;
+            Debug.Log("Found global: " + g.name);
+        }
+        else
+        {
+            GlobalObject = PhotonNetwork.Instantiate("GlobalObject", Vector3.zero, Quaternion.identity, 0);
+            Debug.Log("Created global");
+        }
+
+        //MyThirdPersonController.clientPlayer = NetworkPlayerController.clientPlayer;
+        //MyThirdPersonController.clientPlayer.GetComponent<PlayerInfo>().ID = PhotonNetwork.countOfPlayersInRooms + 1;
+        //PhotonNetwork.RPC(photonView, "UpdatePlayerList", PhotonTargets.All, false, null);
     }
     void OnPhotonRandomJoinFailed()
     {

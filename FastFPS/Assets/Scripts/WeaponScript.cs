@@ -14,6 +14,7 @@ public class WeaponScript : MonoBehaviour
     //shop
     public string Name = "New Weapon";
     public bool Bought = false;
+    public int Cost = 100;
 
     //game
     public Mesh Model;

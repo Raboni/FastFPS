@@ -65,6 +65,7 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
 	// Update is called once per frame
 	void Update ()
     {
+        Speed = MaxSpeed;//until further notice
         if (Armor < 0)
             Armor = 0;
         if (HitPoints <= 0)

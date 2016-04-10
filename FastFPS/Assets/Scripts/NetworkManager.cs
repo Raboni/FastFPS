@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class NetworkManager : Photon.MonoBehaviour
 {
-    public static List<PlayerKit> playerKitList = new List<PlayerKit>();
+    //public static List<PlayerKit> playerKitList = new List<PlayerKit>();
     public static PhotonView view;
 
 	// Use this for initialization
@@ -17,10 +17,14 @@ public class NetworkManager : Photon.MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-	    
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Cursor.visible = !Cursor.visible;
+            Application.Quit();
+        }
 	}
 
-    [PunRPC]
+    /*[PunRPC]
     public void UpdatePlayerList()
     {
         for (int i = 0; i < PhotonNetwork.playerList.Length; i++)
@@ -29,7 +33,7 @@ public class NetworkManager : Photon.MonoBehaviour
             PlayerKit kit = new PlayerKit(PhotonNetwork.playerList[i], FindPlayerObject(PhotonNetwork.playerList[i]));
             playerKitList.Add(kit);
         }
-        Debug.Log("Upddated Player List");
+        Debug.Log("Updated Player List");
         view = photonView;
     }
     public GameObject GetPlayerObject(PhotonPlayer clientPlayer)
@@ -62,5 +66,5 @@ public class NetworkManager : Photon.MonoBehaviour
         }
         public PhotonPlayer Photon;
         public GameObject Object;
-    }
+    }*/
 }

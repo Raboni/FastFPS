@@ -12,8 +12,8 @@ public class playerMovement : MonoBehaviour //by Linus and Robin
     public Vector3 bodyOffset = Vector3.zero;
     private bool useExtBody = false;
 
-    private float speed = 20;
-    private float jumpPower = 20;
+    //private float speed = 20;
+    //private float jumpPower = 20;
 
 	// Use this for initialization
 	void Init ()
@@ -35,8 +35,8 @@ public class playerMovement : MonoBehaviour //by Linus and Robin
         }
 
         //get speed and jump power
-        speed = player.GetComponent<PlayerStats>().MaxSpeed;
-        jumpPower = player.GetComponent<PlayerStats>().JumpPower;
+        //speed = player.GetComponent<PlayerStats>().Speed;
+        //jumpPower = player.GetComponent<PlayerStats>().JumpPower;
 
         Cursor.visible = false;
 	}
@@ -44,12 +44,6 @@ public class playerMovement : MonoBehaviour //by Linus and Robin
 	// Update is called once per frame
 	void Update ()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Cursor.visible = !Cursor.visible;
-            Application.Quit();
-        }
-
         //make sure the clientPlayer has spawned
         if (player == null)
             return;
@@ -58,19 +52,19 @@ public class playerMovement : MonoBehaviour //by Linus and Robin
             Init();
             playerInit = true;
         }
-
+        PlayerStats stats = player.GetComponent<PlayerStats>();
 
         //movement
         /*Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         if (movement != Vector3.zero)
             GetComponent<CharacterController>().Move(movement);*/
-        rb.velocity = (playerBody.transform.forward * Input.GetAxis("Vertical") * speed) + (playerBody.transform.right * Input.GetAxis("Horizontal") * speed) + (playerBody.transform.up * rb.velocity.y);
+        rb.velocity = (playerBody.transform.forward * Input.GetAxis("Vertical") * stats.Speed) + (playerBody.transform.right * Input.GetAxis("Horizontal") * stats.Speed) + (playerBody.transform.up * rb.velocity.y);
         //transform.position = new Vector3(transform.position.x, transform.FindChild("Sphere").position.y + 1.5f, transform.position.z);
 
         //jumping
         if (Input.GetButtonDown("Jump") && playerFeet.transform.FindChild("PlayerGroundCollider").GetComponent<GroundCollisionScript>().onGround)
         {
-            rb.velocity = new Vector3(rb.velocity.x, jumpPower, rb.velocity.z);
+            rb.velocity = new Vector3(rb.velocity.x, stats.JumpPower, rb.velocity.z);
         }
 
         //body positioning
