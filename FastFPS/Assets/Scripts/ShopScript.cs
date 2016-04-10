@@ -16,27 +16,36 @@ public class ShopScript : MonoBehaviour
     MeleeScript Slowrd;
     MeleeScript Fagger;
 
+    bool playerSpawned;
+    bool Open = false;
+
 	// Use this for initialization
-	public void Init ()
+	public void init ()
     {
+        playerSpawned = true;
+
         playerStats = playerMovement.player.transform.FindChild("PlayerBody").GetComponent<PlayerStats>();
         Pistol = new WeaponScript(0, 0, 0, 0, 0, 0);
         Sniper = new WeaponScript(0, 0, 0, 0, 0, 0);
+
+        Debug.Log("hej");
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-        if (Input.GetKeyDown("b"))
+        if (Input.GetKeyDown("b") && playerSpawned==true)
         {
+            Open = !Open;
 
+            Debug.Log("open");
         }
 	}
 
     //simple buy menu
     void OnGUI()
     {
-        if (false)
+        if (Open)
         {
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();

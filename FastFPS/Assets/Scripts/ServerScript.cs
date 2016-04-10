@@ -85,6 +85,8 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
 
         //disable starting camera
         Camera2Disable.SetActive(false);
+
+        GetComponent<ShopScript>().init();
     }
     void OnPhotonRandomJoinFailed()
     {
