@@ -70,7 +70,7 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
             Armor = 0;
         if (HitPoints <= 0)
         {
-            transform.position = SpawnScript.Respawn(1);
+            transform.position = GameObject.FindGameObjectWithTag("ScriptManager").GetComponent<SpawnScript>().Respawn(1);
             HitPoints = MaxHitPoints;
             Debug.Log("respawn");
         }

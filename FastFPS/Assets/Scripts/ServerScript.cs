@@ -9,16 +9,23 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
     int PlayerTeam = 0;
     public GameObject Camera2Disable;
     public static GameObject scriptManager;
-    public GameObject GlobalObject;
+    public GameObject GlobalObject = null;
     bool connecting = false;
+    bool initGlobal = false;
 
 	// Use this for initialization
 	void Start ()
 	{
         scriptManager = gameObject;
-        GetComponent<ServerScript>().SendMessage("UpdateSpawns");
+        //GetComponent<ServerScript>().SendMessage("UpdateSpawns");
         PhotonNetwork.player.name = PlayerPrefs.GetString("Username", "Player");
     }
+    void Update ()
+    {
+        if (initGlobal)
+            InitGlobal();
+    }
+
     void OnDestroy()
     {
         PlayerPrefs.SetString("Username", PhotonNetwork.player.name);
@@ -50,13 +57,17 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
                 Connect();
             }
         }
+        else
+        {
+            GUILayout.Label("global:" + GameObject.FindGameObjectsWithTag("Global").Length);
+        }
     }
     void Connect()
     {
         //connect if online
         //PhotonNetwork.offlineMode = !Online;
         //if (Online)
-            PhotonNetwork.ConnectUsingSettings("Pew 1.0.2");
+            PhotonNetwork.ConnectUsingSettings("Pew 1.1");
     }
 	
     //photon connection
@@ -74,7 +85,7 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
     void OnJoinedRoom()
     {
         //create clientPlayer on the network
-        player = PhotonNetwork.Instantiate("PlayerObjects", SpawnScript.Respawn(PlayerTeam), Quaternion.identity, 0);
+        player = PhotonNetwork.Instantiate("PlayerObjects", GetComponent<SpawnScript>().Respawn(PlayerTeam), Quaternion.identity, 0);
         playerMovement.player = player;
         PlayerLook.player = player;
         CustomMouseLook.player = player;
@@ -83,17 +94,19 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
         //disable starting camera
         Camera2Disable.SetActive(false);
 
-        //GameObject[] g = GameObject.FindGameObjectsWithTag("Global");
-        GameObject g = GameObject.FindWithTag("Global");
-        if (g != null)
+        //initialize shop
+        GetComponent<ShopScript>().init();
+
+        GameObject[] g = GameObject.FindGameObjectsWithTag("Global");
+        //GameObject g = GameObject.FindGameObjectWithTag("Global");
+        if (g.Length > 0)
         {
-            GlobalObject = g;
-            Debug.Log("Found global: " + g.name);
+            GlobalObject = g[0];
+            Debug.Log("Found global: " + g[0].name + "(" + g.Length + ")");
         }
         else
         {
-            GlobalObject = PhotonNetwork.Instantiate("GlobalObject", Vector3.zero, Quaternion.identity, 0);
-            Debug.Log("Created global");
+            initGlobal = true;
         }
 
         //MyThirdPersonController.clientPlayer = NetworkPlayerController.clientPlayer;
@@ -108,5 +121,28 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
     {
         //find other clientPlayer with id and destroy him
         PhotonNetwork.DestroyPlayerObjects(other);
+        GlobalObject.GetComponent<GlobalScript>().PlayerList.Remove(other);
+    }
+    private void InitGlobal()
+    {
+        if (GlobalObject == null)
+        {
+            GameObject[] g = GameObject.FindGameObjectsWithTag("Global");
+            //GameObject g = GameObject.FindGameObjectWithTag("Global");
+            if (g.Length > 0)
+            {
+                GlobalObject = g[0];
+                Debug.Log("Found global later: " + g[0].name + "(" + g.Length + ")");
+            }
+            else
+            {
+                GlobalObject = PhotonNetwork.Instantiate("GlobalObject", Vector3.zero, Quaternion.identity, 0);
+                Debug.Log("Created global");
+            }
+        }
+        //add player
+        GlobalObject.GetComponent<GlobalScript>().AddPlayer(PhotonNetwork.player);
+
+        initGlobal = false;
     }
 }

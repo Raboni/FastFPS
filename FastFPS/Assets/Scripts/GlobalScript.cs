@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class GlobalScript : Photon.MonoBehaviour
 {
     //players info
-    public static int PlayerAmount = 0;
+    public int PlayerAmount = 0;
     public List<PhotonPlayer> PlayerList = new List<PhotonPlayer>();
 
     //match info
@@ -29,11 +29,49 @@ public class GlobalScript : Photon.MonoBehaviour
     {
         if (stream.isWriting)
         {
-            stream.SendNext(PlayerList);
+            stream.SendNext(PlayerList.Count);
+            for (int i = 0; i < PlayerList.Count; i++)
+            {
+                stream.SendNext(PlayerList[i]);
+            }
+
+            stream.SendNext(PlayerKills.Count);
+            for (int i = 0; i < PlayerKills.Count; i++)
+            {
+                stream.SendNext(PlayerKills[i]);
+            }
+
+            stream.SendNext(PlayerDeaths.Count);
+            for (int i = 0; i < PlayerDeaths.Count; i++)
+            {
+                stream.SendNext(PlayerDeaths[i]);
+            }
         }
         else
         {
-            PlayerList = (List<PhotonPlayer>)stream.ReceiveNext();
+            int plLength = (int)stream.ReceiveNext();
+            List<PhotonPlayer> plTemp = new List<PhotonPlayer>();
+            for (int i = 0; i < plLength; i++)
+            {
+                plTemp.Add((PhotonPlayer)stream.ReceiveNext());
+            }
+            PlayerList = plTemp;
+
+            int pkLength = (int)stream.ReceiveNext();
+            List<int> pkTemp = new List<int>();
+            for (int i = 0; i < pkLength; i++)
+            {
+                pkTemp.Add((int)stream.ReceiveNext());
+            }
+            PlayerKills = pkTemp;
+
+            int pdLength = (int)stream.ReceiveNext();
+            List<int> pdTemp = new List<int>();
+            for (int i = 0; i < pdLength; i++)
+            {
+                pdTemp.Add((int)stream.ReceiveNext());
+            }
+            PlayerKills = pdTemp;
         }
     }
 
@@ -52,5 +90,25 @@ public class GlobalScript : Photon.MonoBehaviour
                 return i;
         }
         return 255;
+    }
+    public void AddPlayer(PhotonPlayer player)
+    {
+        PlayerList.Add(player);
+        PlayerKills.Add(0);
+        PlayerDeaths.Add(0);
+    }
+    public void RemovePlayer(PhotonPlayer player)
+    {
+        int id = GetPlayerId(player);
+        if (id != 255)
+        {
+            PlayerList.RemoveAt(id);
+            PlayerKills.RemoveAt(id);
+            PlayerDeaths.RemoveAt(id);
+        }
+        else
+        {
+            Debug.Log("Unknown player to remove");
+        }
     }
 }
