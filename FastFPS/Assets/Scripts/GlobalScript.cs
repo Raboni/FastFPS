@@ -22,6 +22,7 @@ public class GlobalScript : Photon.MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
+        //update player amount
         PlayerAmount = PlayerList.Count;
 	}
 
@@ -29,18 +30,21 @@ public class GlobalScript : Photon.MonoBehaviour
     {
         if (stream.isWriting)
         {
+            //send players
             stream.SendNext(PlayerList.Count);
             for (int i = 0; i < PlayerList.Count; i++)
             {
                 stream.SendNext(PlayerList[i]);
             }
 
+            //send kills
             stream.SendNext(PlayerKills.Count);
             for (int i = 0; i < PlayerKills.Count; i++)
             {
                 stream.SendNext(PlayerKills[i]);
             }
 
+            //send deaths
             stream.SendNext(PlayerDeaths.Count);
             for (int i = 0; i < PlayerDeaths.Count; i++)
             {
@@ -49,6 +53,7 @@ public class GlobalScript : Photon.MonoBehaviour
         }
         else
         {
+            //get players
             int plLength = (int)stream.ReceiveNext();
             List<PhotonPlayer> plTemp = new List<PhotonPlayer>();
             for (int i = 0; i < plLength; i++)
@@ -57,6 +62,7 @@ public class GlobalScript : Photon.MonoBehaviour
             }
             PlayerList = plTemp;
 
+            //get kills
             int pkLength = (int)stream.ReceiveNext();
             List<int> pkTemp = new List<int>();
             for (int i = 0; i < pkLength; i++)
@@ -65,21 +71,22 @@ public class GlobalScript : Photon.MonoBehaviour
             }
             PlayerKills = pkTemp;
 
+            //get deaths
             int pdLength = (int)stream.ReceiveNext();
             List<int> pdTemp = new List<int>();
             for (int i = 0; i < pdLength; i++)
             {
                 pdTemp.Add((int)stream.ReceiveNext());
             }
-            PlayerKills = pdTemp;
+            PlayerDeaths = pdTemp;
         }
     }
 
     /// <summary>
     /// Returns player id or 255 for non-existing players
     /// </summary>
-    /// <param name="player"></param>
-    /// <returns></returns>
+    /// <param name="player">Player to find</param>
+    /// <returns>Player id</returns>
     public int GetPlayerId(PhotonPlayer player)
     {
         //PhotonPlayer[] playerList = PhotonNetwork.playerList;
@@ -91,12 +98,21 @@ public class GlobalScript : Photon.MonoBehaviour
         }
         return 255;
     }
+    /// <summary>
+    /// Add player to global tracking
+    /// </summary>
+    /// <param name="player">Player to add</param>
     public void AddPlayer(PhotonPlayer player)
     {
         PlayerList.Add(player);
         PlayerKills.Add(0);
         PlayerDeaths.Add(0);
+        Debug.Log("Player Added");
     }
+    /// <summary>
+    /// Remove player from global tracking
+    /// </summary>
+    /// <param name="player">Player to remove</param>
     public void RemovePlayer(PhotonPlayer player)
     {
         int id = GetPlayerId(player);
@@ -110,5 +126,6 @@ public class GlobalScript : Photon.MonoBehaviour
         {
             Debug.Log("Unknown player to remove");
         }
+        Debug.Log("Player Removed");
     }
 }

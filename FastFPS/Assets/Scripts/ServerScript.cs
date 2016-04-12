@@ -121,7 +121,7 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
     {
         //find other clientPlayer with id and destroy him
         PhotonNetwork.DestroyPlayerObjects(other);
-        GlobalObject.GetComponent<GlobalScript>().PlayerList.Remove(other);
+        GlobalObject.GetComponent<GlobalScript>().RemovePlayer(other);
     }
     private void InitGlobal()
     {
@@ -144,5 +144,6 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
         GlobalObject.GetComponent<GlobalScript>().AddPlayer(PhotonNetwork.player);
 
         initGlobal = false;
+        Debug.Log("Global Initialized");
     }
 }
