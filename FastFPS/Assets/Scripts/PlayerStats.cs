@@ -44,13 +44,11 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
     public byte Ammo = 10;
 
     //weapon equiped
-    WeaponScript equipedRanged;
     public WeaponScript primaryRanged;
     public WeaponScript secondaryRanged;
 
-    MeleeScript equipedMelee;
-    public MeleeScript secondaryMelee;
-    public MeleeScript primaryMelee;
+    public WeaponScript secondaryMelee;
+    public WeaponScript primaryMelee;
 
     //shop
     bool[] perksBought = new bool[2];
@@ -70,9 +68,8 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
             Armor = 0;
         if (HitPoints <= 0)
         {
-            transform.position = GameObject.FindGameObjectWithTag("ScriptManager").GetComponent<SpawnScript>().Respawn(1);
+            Respawn();
             HitPoints = MaxHitPoints;
-            Debug.Log("respawn");
         }
 	}
     public void UpdateMax()
@@ -80,7 +77,7 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
         ResetMax();
 
         //set perks & weapon stats
-        SetWeaponStats(equipedRanged);
+        SetWeaponStats(primaryRanged);
     }
 
     private void ResetMax()
@@ -115,5 +112,29 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
         RoF = weapon.RoF;
         ReloadSpeed = 0;
         Range = weapon.Range;
+    }
+    
+    private void Respawn()
+    {
+        //get team
+        int team;
+        switch (clientPlayer.GetTeam())
+        {
+            case PunTeams.Team.none:
+                team = 0;
+                break;
+            case PunTeams.Team.blue:
+                team = 1;
+                break;
+            case PunTeams.Team.red:
+                team = 2;
+                break;
+            default:
+                team = 0;
+                break;
+        }
+        //respawn
+        transform.FindChild("PlayerFeet").position = GameObject.FindGameObjectWithTag("ScriptManager").GetComponent<SpawnScript>().Respawn(team);
+        Debug.Log("Respawn");
     }
 }

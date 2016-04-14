@@ -76,7 +76,10 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
         if(!PhotonNetwork.autoJoinLobby)
             PhotonNetwork.JoinLobby();
         if (PhotonNetwork.offlineMode)
+        {
+            PhotonNetwork.LeaveRoom();
             PhotonNetwork.JoinOrCreateRoom("offline", new RoomOptions(), TypedLobby.Default);
+        }
     }
     void OnJoinedLobby()
     {

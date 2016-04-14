@@ -6,6 +6,7 @@ public class GlobalScript : Photon.MonoBehaviour
 {
     //players info
     public int PlayerAmount = 0;
+    public int[] TeamPlayerAmount = new int[3];
     public List<PhotonPlayer> PlayerList = new List<PhotonPlayer>();
 
     //match info
@@ -24,6 +25,8 @@ public class GlobalScript : Photon.MonoBehaviour
     {
         //update player amount
         PlayerAmount = PlayerList.Count;
+        //update team player amount
+        //TeamPlayerAmount = GetTeamPlayerAmount();
 	}
 
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -80,6 +83,33 @@ public class GlobalScript : Photon.MonoBehaviour
             }
             PlayerDeaths = pdTemp;
         }
+    }
+    /// <summary>
+    /// Gets the amount of players in each team (1:Blue 2:Red 0:Other)
+    /// </summary>
+    /// <returns></returns>
+    private int[] GetTeamPlayerAmount()
+    {
+        int[] tpa = new int[3];
+        foreach(PhotonPlayer p in PlayerList)
+        {
+            switch (p.GetTeam())
+            {
+                case PunTeams.Team.none:
+                    tpa[0]++;
+                    break;
+                case PunTeams.Team.blue:
+                    tpa[1]++;
+                    break;
+                case PunTeams.Team.red:
+                    tpa[2]++;
+                    break;
+                default:
+                    tpa[0]++;
+                    break;
+            }
+        }
+        return tpa;
     }
 
     /// <summary>

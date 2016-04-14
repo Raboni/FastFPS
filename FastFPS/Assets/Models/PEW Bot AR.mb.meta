@@ -1,0 +1,203 @@
+fileFormatVersion: 2
+guid: 0dc5769e3e7538a42b17314cb11f9780
+timeCreated: 1460548473
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Combat_Shotgun:curveNewCurlyHair
+    100002: Combat_Shotgun:curveNewCurlyHair1
+    100004: Combat_Shotgun:pCube1
+    100006: Combat_Shotgun:pCylinder1
+    100008: Combat_Shotgun:pCylinder2
+    100010: Combat_Shotgun:pCylinder4
+    100012: Combat_Shotgun:pCylinder5
+    100014: Combat_Shotgun:pCylinder6
+    100016: Combat_Shotgun:polySurface1
+    100018: Combat_Shotgun:polySurface1 1
+    100020: Combat_Shotgun:polySurface2
+    100022: Combat_Shotgun:polySurface3
+    100024: Combat_Shotgun:pPipe1
+    100026: Combat_Shotgun:pPlane1
+    100028: Combat_Shotgun:pPlane2
+    100030: Combat_Shotgun:pPlane3
+    100032: Combat_Shotgun:pPlane4
+    100034: Combat_Shotgun:pPlane5
+    100036: Combat_Shotgun:pPlane6
+    100038: Combat_Shotgun:pPlane7
+    100040: Combat_Shotgun:transform1
+    100042: Combat_Shotgun:transform10
+    100044: Combat_Shotgun:transform11
+    100046: Combat_Shotgun:transform12
+    100048: Combat_Shotgun:transform13
+    100050: Combat_Shotgun:transform14
+    100052: Combat_Shotgun:transform15
+    100054: Combat_Shotgun:transform16
+    100056: Combat_Shotgun:transform17
+    100058: Combat_Shotgun:transform2
+    100060: Combat_Shotgun:transform3
+    100062: Combat_Shotgun:transform4
+    100064: Combat_Shotgun:transform5
+    100066: Combat_Shotgun:transform6
+    100068: Combat_Shotgun:transform7
+    100070: Combat_Shotgun:transform8
+    100072: Combat_Shotgun:transform9
+    100074: pCube1
+    100076: pCube2
+    100078: pCube3
+    100080: pCube4
+    100082: pCube5
+    100084: pCube6
+    100086: pCylinder1
+    100088: pCylinder2
+    100090: pCylinder3
+    100092: pCylinder4
+    100094: pCylinder5
+    100096: pCylinder6
+    100098: //RootNode
+    100100: pTorus1
+    100102: transform1
+    100104: transform10
+    100106: transform11
+    100108: transform12
+    100110: transform13
+    100112: transform2
+    100114: transform3
+    100116: transform4
+    100118: transform5
+    100120: transform6
+    100122: transform7
+    100124: transform8
+    100126: transform9
+    400000: Combat_Shotgun:curveNewCurlyHair
+    400002: Combat_Shotgun:curveNewCurlyHair1
+    400004: Combat_Shotgun:pCube1
+    400006: Combat_Shotgun:pCylinder1
+    400008: Combat_Shotgun:pCylinder2
+    400010: Combat_Shotgun:pCylinder4
+    400012: Combat_Shotgun:pCylinder5
+    400014: Combat_Shotgun:pCylinder6
+    400016: Combat_Shotgun:polySurface1
+    400018: Combat_Shotgun:polySurface1 1
+    400020: Combat_Shotgun:polySurface2
+    400022: Combat_Shotgun:polySurface3
+    400024: Combat_Shotgun:pPipe1
+    400026: Combat_Shotgun:pPlane1
+    400028: Combat_Shotgun:pPlane2
+    400030: Combat_Shotgun:pPlane3
+    400032: Combat_Shotgun:pPlane4
+    400034: Combat_Shotgun:pPlane5
+    400036: Combat_Shotgun:pPlane6
+    400038: Combat_Shotgun:pPlane7
+    400040: Combat_Shotgun:transform1
+    400042: Combat_Shotgun:transform10
+    400044: Combat_Shotgun:transform11
+    400046: Combat_Shotgun:transform12
+    400048: Combat_Shotgun:transform13
+    400050: Combat_Shotgun:transform14
+    400052: Combat_Shotgun:transform15
+    400054: Combat_Shotgun:transform16
+    400056: Combat_Shotgun:transform17
+    400058: Combat_Shotgun:transform2
+    400060: Combat_Shotgun:transform3
+    400062: Combat_Shotgun:transform4
+    400064: Combat_Shotgun:transform5
+    400066: Combat_Shotgun:transform6
+    400068: Combat_Shotgun:transform7
+    400070: Combat_Shotgun:transform8
+    400072: Combat_Shotgun:transform9
+    400074: pCube1
+    400076: pCube2
+    400078: pCube3
+    400080: pCube4
+    400082: pCube5
+    400084: pCube6
+    400086: pCylinder1
+    400088: pCylinder2
+    400090: pCylinder3
+    400092: pCylinder4
+    400094: pCylinder5
+    400096: pCylinder6
+    400098: //RootNode
+    400100: pTorus1
+    400102: transform1
+    400104: transform10
+    400106: transform11
+    400108: transform12
+    400110: transform13
+    400112: transform2
+    400114: transform3
+    400116: transform4
+    400118: transform5
+    400120: transform6
+    400122: transform7
+    400124: transform8
+    400126: transform9
+    2300000: Combat_Shotgun:polySurface1
+    3300000: Combat_Shotgun:polySurface1
+    4300000: Combat_Shotgun:polySurface1
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

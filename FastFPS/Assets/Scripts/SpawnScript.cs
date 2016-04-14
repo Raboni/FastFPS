@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class SpawnScript : MonoBehaviour //by Linus
 {
-    //public static List<GameObject> SpawnAreaStatic = new List<GameObject>();
     public List<GameObject> SpawnArea = new List<GameObject>();
+
     public Vector3 Respawn(int Team)
     {
         float x;

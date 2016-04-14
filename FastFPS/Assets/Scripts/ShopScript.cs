@@ -2,19 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class ShopScript : MonoBehaviour
+public class ShopScript : MonoBehaviour //by Kevin and Robin
 {
     public PlayerStats playerStats;
 
-    //Ranged Weapons
-    public WeaponScript Pistol;//note from Robin: en weapon list kanske?
-    WeaponScript Assault;
-    WeaponScript Sniper;
-    WeaponScript Smg;
-    
-    //Melee Weapons
-    MeleeScript Slowrd;
-    MeleeScript Fagger;
+    public WeaponScript[] weaponArray;
 
     bool playerSpawned;
     bool Open = false;
@@ -25,70 +17,56 @@ public class ShopScript : MonoBehaviour
         playerSpawned = true;
 
         playerStats = playerMovement.player.transform.FindChild("PlayerBody").GetComponent<PlayerStats>();
-        Pistol = new WeaponScript(0, 0, 0, 0, 0, 0);
-        Sniper = new WeaponScript(0, 0, 0, 0, 0, 0);
+        weaponArray = GameObject.FindGameObjectWithTag("ScriptManager").transform.FindChild("Weapons").GetComponents<WeaponScript>();
 
-        Debug.Log("hej");
+        Debug.Log("shop init");
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-        if (Input.GetKeyDown("b") && playerSpawned==true)
+        if (Input.GetKeyDown("b") && playerSpawned)
         {
             Open = !Open;
-
-            Debug.Log("open");
+            Cursor.visible = Open;
+            Debug.Log("open: " + Open);
         }
 	}
 
     //simple buy menu
     void OnGUI()
     {
-        if (Open)
+        if (Open && playerSpawned)
         {
+            GUILayout.BeginArea(new Rect(Vector2.zero, new Vector2(Screen.width, Screen.height)));
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
             GUILayout.BeginVertical();
             GUILayout.FlexibleSpace();
-            //pistol
-            if (!Pistol.Bought)
+            foreach (WeaponScript weapon in weaponArray)
             {
-                if (GUILayout.Button("Pistol (10$)") && playerStats.credits >= 10)
+                if (!weapon.Bought)
                 {
-                    playerStats.primaryRanged = Pistol;
-                    playerStats.credits -= 10;
-                    Pistol.Bought = true;
+                    if (GUILayout.Button(weapon.Name + " (" + weapon.Cost + ")") && playerStats.credits >= weapon.Cost)
+                    {
+                        playerStats.primaryRanged = weapon;
+                        playerStats.credits -= weapon.Cost;
+                        weapon.Bought = true;
+                    }
                 }
-            }
-            else
-            {
-                if (GUILayout.Button("Pistol"))
+                else
                 {
-                    playerStats.primaryRanged = Pistol;
-                }
-            }
-            //sniper
-            if (!Sniper.Bought)
-            {
-                if (GUILayout.Button("Sniper (50$)") && playerStats.credits >= 50)
-                {
-                    playerStats.primaryRanged = Sniper;
-                    playerStats.credits -= 50;
-                    Sniper.Bought = true;
-                }
-            }
-            else
-            {
-                if (GUILayout.Button("Sniper"))
-                {
-                    playerStats.primaryRanged = Sniper;
+                    if (GUILayout.Button(weapon.Name))
+                    {
+                        playerStats.primaryRanged = weapon;
+                    }
                 }
             }
             GUILayout.FlexibleSpace();
             GUILayout.EndVertical();
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
+            GUILayout.EndArea();
         }
     }
 }

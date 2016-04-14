@@ -34,11 +34,15 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
 	// Update is called once per frame
 	void Update ()
     {
-        localPlayer = transform.parent.GetComponent<PlayerStats>().clientPlayer;
+        PlayerStats stats = transform.parent.GetComponent<PlayerStats>();
+        localPlayer = stats.clientPlayer;
         //transform.rotation.SetLookRotation(camera.transform.forward, transform.up);
 
-        //Rate of Fire
-        //RoF = transform.parent.GetComponent<PlayerStats>().RoF;
+        //update weapon model
+        //transform.FindChild("WeaponRight").GetComponent<MeshFilter>().mesh = stats.primaryRanged.Model;
+        //transform.FindChild("WeaponLeft").GetComponent<MeshFilter>().mesh = stats.primaryMelee.Model;
+
+        //make time tick
         time += Time.deltaTime;
 
         //body positioning (follow feet)
