@@ -4,6 +4,7 @@ using System.Collections;
 public class WeaponScript : MonoBehaviour
 {
     //stats
+    public bool Ranged = true;
     public int Damage = 10;
     public byte MaxClipAmount = 3;
     public byte MaxClipSize = 10;
