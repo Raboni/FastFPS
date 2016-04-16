@@ -25,8 +25,25 @@ public class GlobalScript : Photon.MonoBehaviour
     {
         //update player amount
         PlayerAmount = PlayerList.Count;
+
         //update team player amount
-        //TeamPlayerAmount = GetTeamPlayerAmount();
+        TeamPlayerAmount = GetTeamPlayerAmount();
+
+        //update team score
+        int temp = 0;
+        for (int i = 0; i < PlayerList.Count; i++)
+        {
+            if (PlayerList[i].GetTeam() == PunTeams.Team.blue)
+                temp += PlayerKills[i];
+        }
+        TeamScore[0] = temp;
+        temp = 0;
+        for (int i = 0; i < PlayerList.Count; i++)
+        {
+            if (PlayerList[i].GetTeam() == PunTeams.Team.red)
+                temp += PlayerKills[i];
+        }
+        TeamScore[1] = temp;
 	}
 
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -85,7 +102,14 @@ public class GlobalScript : Photon.MonoBehaviour
         }
     }
     /// <summary>
-    /// Gets the amount of players in each team (1:Blue 2:Red 0:Other)
+    /// Updates the amount of players in each team
+    /// </summary>
+    public void UpdateTeamPlayerAmount()
+    {
+        TeamPlayerAmount = GetTeamPlayerAmount();
+    }
+    /// <summary>
+    /// Gets the amount of players in each team (0:Blue 1:Red 2:Other)
     /// </summary>
     /// <returns></returns>
     private int[] GetTeamPlayerAmount()
@@ -96,16 +120,16 @@ public class GlobalScript : Photon.MonoBehaviour
             switch (p.GetTeam())
             {
                 case PunTeams.Team.none:
-                    tpa[0]++;
-                    break;
-                case PunTeams.Team.blue:
-                    tpa[1]++;
-                    break;
-                case PunTeams.Team.red:
                     tpa[2]++;
                     break;
-                default:
+                case PunTeams.Team.red:
+                    tpa[1]++;
+                    break;
+                case PunTeams.Team.blue:
                     tpa[0]++;
+                    break;
+                default:
+                    tpa[2]++;
                     break;
             }
         }

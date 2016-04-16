@@ -11,7 +11,9 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
     public static GameObject scriptManager;
     public GameObject GlobalObject = null;
     bool connecting = false;
-    bool initGlobal = false;
+    bool doInit = false;
+    public Material MaterialBlue;
+    public Material MaterialRed;
 
 	// Use this for initialization
 	void Start ()
@@ -22,8 +24,15 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
     }
     void Update ()
     {
-        if (initGlobal)
+        if (doInit)
+        {
             InitGlobal();
+            selectTeam();
+            //initialize shop
+            GetComponent<ShopScript>().init();
+
+            doInit = false;
+        }
     }
 
     void OnDestroy()
@@ -57,7 +66,7 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
                 Connect();
             }
         }
-        else
+        else if (!doInit)
         {
             GUILayout.Label("global:" + GameObject.FindGameObjectsWithTag("Global").Length);
         }
@@ -97,23 +106,9 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
         //disable starting camera
         Camera2Disable.SetActive(false);
 
-        //initialize shop
-        GetComponent<ShopScript>().init();
+        //initialize
+        doInit = true;
 
-        GameObject[] g = GameObject.FindGameObjectsWithTag("Global");
-        //GameObject g = GameObject.FindGameObjectWithTag("Global");
-        if (g.Length > 0)
-        {
-            GlobalObject = g[0];
-            Debug.Log("Found global: " + g[0].name + "(" + g.Length + ")");
-        }
-        else
-        {
-            initGlobal = true;
-        }
-
-        //MyThirdPersonController.clientPlayer = NetworkPlayerController.clientPlayer;
-        //MyThirdPersonController.clientPlayer.GetComponent<PlayerInfo>().ID = PhotonNetwork.countOfPlayersInRooms + 1;
         //PhotonNetwork.RPC(photonView, "UpdatePlayerList", PhotonTargets.All, false, null);
     }
     void OnPhotonRandomJoinFailed()
@@ -146,7 +141,26 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
         //add player
         GlobalObject.GetComponent<GlobalScript>().AddPlayer(PhotonNetwork.player);
 
-        initGlobal = false;
         Debug.Log("Global Initialized");
+    }
+    private void selectTeam()
+    {
+        GlobalScript global = GlobalObject.GetComponent<GlobalScript>();
+        global.UpdateTeamPlayerAmount();
+        //select team
+        if (global.TeamPlayerAmount[1] > global.TeamPlayerAmount[2])
+        {
+            PlayerTeam = 2;
+            PhotonNetwork.player.SetTeam(PunTeams.Team.red);
+            player.transform.FindChild("PlayerBody").FindChild("Body").GetComponent<MeshRenderer>().material = MaterialRed;
+            player.transform.FindChild("PlayerFeet").GetComponent<MeshRenderer>().material = MaterialRed;
+        }
+        else if (global.TeamPlayerAmount[2] >= global.TeamPlayerAmount[1])
+        {
+            PlayerTeam = 1;
+            PhotonNetwork.player.SetTeam(PunTeams.Team.blue);
+            player.transform.FindChild("PlayerBody").FindChild("Body").GetComponent<MeshRenderer>().material = MaterialBlue;
+            player.transform.FindChild("PlayerFeet").GetComponent<MeshRenderer>().material = MaterialBlue;
+        }
     }
 }
