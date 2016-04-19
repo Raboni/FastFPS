@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
 {
     //public bool Online = true;
-    GameObject player;
+    public static GameObject player;
     int PlayerTeam = 0;
     public GameObject Camera2Disable;
     public static GameObject scriptManager;
@@ -98,9 +98,10 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
     {
         //create clientPlayer on the network
         player = PhotonNetwork.Instantiate("PlayerObjects", GetComponent<SpawnScript>().Respawn(PlayerTeam), Quaternion.identity, 0);
-        playerMovement.player = player;
-        PlayerLook.player = player;
-        CustomMouseLook.player = player;
+        //playerMovement.player = player;
+        //PlayerLook.player = player;
+        //CustomMouseLook.player = player;
+        player.GetComponent<playerMovement>().enabled = true;
         player.GetComponent<PlayerStats>().clientPlayer = PhotonNetwork.player;
         player.transform.FindChild("PlayerBody").GetComponent<PlayerBodyScript>().SetLocal();
         //disable starting camera

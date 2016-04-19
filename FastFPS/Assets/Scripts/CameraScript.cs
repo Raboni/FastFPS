@@ -7,19 +7,19 @@ public class CameraScript : MonoBehaviour //by Robin
     public bool disableOtherCameras = true;
     public Vector3 Offset = Vector3.zero;
 
-    public static PhotonPlayer photonPlayer;
+    public PhotonPlayer photonPlayer;
 
 	// Use this for initialization
 	void Awake ()
     {
-        if (playerMovement.player != null)
+        if (ServerScript.player != null)
         {
-            if (this == playerMovement.player.transform.FindChild("Main Camera").GetComponent<CameraScript>())
+            if (this == ServerScript.player.transform.FindChild("Main Camera").GetComponent<CameraScript>())
                 photonPlayer = PhotonNetwork.player;
             else
                 gameObject.SetActive(false);
         }
-        else if (!PhotonNetwork.offlineMode && transform.parent.gameObject == playerMovement.player)
+        else if (!PhotonNetwork.offlineMode && transform.parent.gameObject == ServerScript.player)
             gameObject.SetActive(false);
 
         //GameObject[] cameraArray = GameObject.FindGameObjectsWithTag("MainCamera");

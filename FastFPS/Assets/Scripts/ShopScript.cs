@@ -16,7 +16,7 @@ public class ShopScript : MonoBehaviour //by Kevin and Robin
     {
         playerSpawned = true;
 
-        playerStats = playerMovement.player.transform.FindChild("PlayerBody").GetComponent<PlayerStats>();
+        playerStats = ServerScript.player.transform.FindChild("PlayerBody").GetComponent<PlayerStats>();
         weaponArray = GameObject.FindGameObjectWithTag("ScriptManager").transform.FindChild("Weapons").GetComponents<WeaponScript>();
 
         Debug.Log("shop init");

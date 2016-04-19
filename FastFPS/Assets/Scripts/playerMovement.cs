@@ -3,9 +3,9 @@ using System.Collections;
 
 public class playerMovement : MonoBehaviour //by Linus and Robin
 {
-    public static GameObject player;
+    //public static GameObject player;
     public GameObject playerFeet;
-    private bool playerInit = false;
+    //private bool playerInit = false;
 
     Rigidbody rb;
     private GameObject playerBody;
@@ -16,11 +16,11 @@ public class playerMovement : MonoBehaviour //by Linus and Robin
     //private float jumpPower = 20;
 
 	// Use this for initialization
-	void Init ()
+	void Start ()
     {
         //get the feet and body
-        playerFeet = player.transform.FindChild("PlayerFeet").gameObject;
-        playerBody = player.transform.FindChild("PlayerBody").gameObject;
+        playerFeet = transform.FindChild("PlayerFeet").gameObject;
+        playerBody = transform.FindChild("PlayerBody").gameObject;
 
         //set gravity and rigidbody
         //Debug.Log(Physics.gravity.ToString());
@@ -38,6 +38,7 @@ public class playerMovement : MonoBehaviour //by Linus and Robin
         //speed = player.GetComponent<PlayerStats>().Speed;
         //jumpPower = player.GetComponent<PlayerStats>().JumpPower;
 
+        Debug.Log("Initialized");
         Cursor.visible = false;
 	}
 	
@@ -45,14 +46,14 @@ public class playerMovement : MonoBehaviour //by Linus and Robin
 	void Update ()
     {
         //make sure the clientPlayer has spawned
-        if (player == null)
+        /*if (player == null)
             return;
         else if (!playerInit)
         {
             Init();
             playerInit = true;
-        }
-        PlayerStats stats = player.GetComponent<PlayerStats>();
+        }*/
+        PlayerStats stats = GetComponent<PlayerStats>();
 
         //movement
         /*Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));

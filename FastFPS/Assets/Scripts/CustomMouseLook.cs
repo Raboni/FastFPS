@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CustomMouseLook : MonoBehaviour //standard asset MouseLook script modified by Robin
 {
-    public static GameObject player;
+    //public static GameObject player;
     private GameObject playerBody;
     private GameObject camera;
     private bool playerInit = false;
@@ -21,7 +21,7 @@ public class CustomMouseLook : MonoBehaviour //standard asset MouseLook script m
     void Update()
     {
         //make sure the player has spawned
-        if (player == null)
+        if (ServerScript.player == null)
         {
             playerInit = false;
             return;
@@ -64,8 +64,8 @@ public class CustomMouseLook : MonoBehaviour //standard asset MouseLook script m
     void Init()
     {
         //set body and camera
-        playerBody = player.transform.FindChild("PlayerBody").gameObject;
-        camera = player.transform.FindChild("Main Camera").gameObject;
+        playerBody = ServerScript.player.transform.FindChild("PlayerBody").gameObject;
+        camera = ServerScript.player.transform.FindChild("Main Camera").gameObject;
 
         // Make the rigid body not change rotation
         if (GetComponent<Rigidbody>())

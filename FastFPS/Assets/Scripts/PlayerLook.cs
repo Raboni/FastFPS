@@ -4,7 +4,7 @@ using System.Collections;
 public class PlayerLook : MonoBehaviour //20% working script by Robin
 {
     private bool playerInit = false;
-    public static GameObject player;
+    //public static GameObject player;
     private GameObject playerBody;
     public GameObject camera;
 
@@ -16,15 +16,15 @@ public class PlayerLook : MonoBehaviour //20% working script by Robin
     {
         //Cursor.visible = false;
         //Cursor.lockState = CursorLockMode.Locked;
-        playerBody = player.transform.FindChild("PlayerBody").gameObject;
-        camera = player.transform.FindChild("Main Camera").gameObject;
+        playerBody = ServerScript.player.transform.FindChild("PlayerBody").gameObject;
+        camera = ServerScript.player.transform.FindChild("Main Camera").gameObject;
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
         //make sure the player has spawned
-        if (player == null)
+        if (ServerScript.player == null)
         {
             playerInit = false;
             return;
