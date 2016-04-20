@@ -10,14 +10,13 @@ public class GlobalScript : Photon.MonoBehaviour
     public List<PhotonPlayer> PlayerList = new List<PhotonPlayer>();
 
     //match info
-    public int[] TeamScore = new int[2];
+    public int[] TeamScore = new int[3];
     public List<int> PlayerKills = new List<int>();
     public List<int> PlayerDeaths = new List<int>();
 
 	// Use this for initialization
 	void Start ()
     {
-	    
 	}
 	
 	// Update is called once per frame
@@ -27,23 +26,10 @@ public class GlobalScript : Photon.MonoBehaviour
         PlayerAmount = PlayerList.Count;
 
         //update team player amount
-        TeamPlayerAmount = GetTeamPlayerAmount();
+        UpdateTeamPlayerAmount();
 
         //update team score
-        int temp = 0;
-        for (int i = 0; i < PlayerList.Count; i++)
-        {
-            if (PlayerList[i].GetTeam() == PunTeams.Team.blue)
-                temp += PlayerKills[i];
-        }
-        TeamScore[0] = temp;
-        temp = 0;
-        for (int i = 0; i < PlayerList.Count; i++)
-        {
-            if (PlayerList[i].GetTeam() == PunTeams.Team.red)
-                temp += PlayerKills[i];
-        }
-        TeamScore[1] = temp;
+        UpdateTeamScore();
 	}
 
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -109,9 +95,31 @@ public class GlobalScript : Photon.MonoBehaviour
         TeamPlayerAmount = GetTeamPlayerAmount();
     }
     /// <summary>
+    /// Updates the scores of all teams
+    /// </summary>
+    public void UpdateTeamScore()
+    {
+        TeamScore = GetTeamKills();
+        /* old code
+        int temp = 0;
+        for (int i = 0; i < PlayerList.Count; i++)
+        {
+            if (PlayerList[i].GetTeam() == PunTeams.Team.blue)
+                temp += PlayerKills[i];
+        }
+        TeamScore[0] = temp;
+        temp = 0;
+        for (int i = 0; i < PlayerList.Count; i++)
+        {
+            if (PlayerList[i].GetTeam() == PunTeams.Team.red)
+                temp += PlayerKills[i];
+        }
+        TeamScore[1] = temp;*/
+    }
+    /// <summary>
     /// Gets the amount of players in each team (0:Blue 1:Red 2:Other)
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Player Amount</returns>
     private int[] GetTeamPlayerAmount()
     {
         int[] tpa = new int[3];
@@ -134,6 +142,33 @@ public class GlobalScript : Photon.MonoBehaviour
             }
         }
         return tpa;
+    }
+    /// <summary>
+    /// Gets all the kills by players in each team (0:Blue 1:Red 2:Other)
+    /// </summary>
+    /// <returns>Kills</returns>
+    private int[] GetTeamKills()
+    {
+        int[] tk = new int[3];
+        for (int i = 0; i < PlayerList.Count; i++)
+        {
+            switch (PlayerList[i].GetTeam())
+            {
+                case PunTeams.Team.none:
+                    tk[2] += PlayerKills[i];
+                    break;
+                case PunTeams.Team.red:
+                    tk[1] += PlayerKills[i];
+                    break;
+                case PunTeams.Team.blue:
+                    tk[0] += PlayerKills[i];
+                    break;
+                default:
+                    tk[2] += PlayerKills[i];
+                    break;
+            }
+        }
+        return tk;
     }
 
     /// <summary>
@@ -181,5 +216,14 @@ public class GlobalScript : Photon.MonoBehaviour
             Debug.Log("Unknown player to remove");
         }
         Debug.Log("Player Removed");
+    }
+    public void Reset()
+    {
+        TeamScore = new int[3];
+        for (int i = 0; i < PlayerList.Count; i++)
+        {
+            PlayerKills[i] = 0;
+            PlayerDeaths[i] = 0;
+        }
     }
 }

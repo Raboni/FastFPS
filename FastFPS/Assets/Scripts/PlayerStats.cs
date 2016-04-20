@@ -58,6 +58,7 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
 	void Start ()
     {
         ResetMax();
+        primaryRanged = GameObject.FindGameObjectWithTag("ScriptManager").transform.FindChild("Weapons").GetComponents<WeaponScript>()[0];
 	}
 	
 	// Update is called once per frame

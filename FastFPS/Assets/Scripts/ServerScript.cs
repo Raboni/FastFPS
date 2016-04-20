@@ -30,6 +30,9 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
             selectTeam();
             //initialize shop
             GetComponent<ShopScript>().init();
+            //start match
+            GetComponent<MatchScript>().Init();
+            GetComponent<MatchScript>().MatchStarted = true;
 
             doInit = false;
         }
@@ -42,7 +45,7 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
     void OnGUI()
     {
         //draw connection state
-        GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
+        //GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
 
         //draw menu
         if (!PhotonNetwork.connected && !connecting)
@@ -68,7 +71,8 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
         }
         else if (!doInit)
         {
-            GUILayout.Label("global:" + GameObject.FindGameObjectsWithTag("Global").Length);
+            //debug
+            //GUILayout.Label("global:" + GameObject.FindGameObjectsWithTag("Global").Length);
         }
     }
     void Connect()
@@ -98,14 +102,13 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
     {
         //create clientPlayer on the network
         player = PhotonNetwork.Instantiate("PlayerObjects", GetComponent<SpawnScript>().Respawn(PlayerTeam), Quaternion.identity, 0);
-        //playerMovement.player = player;
-        //PlayerLook.player = player;
-        //CustomMouseLook.player = player;
         player.GetComponent<playerMovement>().enabled = true;
         player.GetComponent<PlayerStats>().clientPlayer = PhotonNetwork.player;
         player.transform.FindChild("PlayerBody").GetComponent<PlayerBodyScript>().SetLocal();
         //disable starting camera
         Camera2Disable.SetActive(false);
+        //hide your player from your camera
+        player.transform.FindChild("PlayerBody").FindChild("Body").gameObject.layer = 8;
 
         //initialize
         doInit = true;
@@ -122,6 +125,7 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
         PhotonNetwork.DestroyPlayerObjects(other);
         GlobalObject.GetComponent<GlobalScript>().RemovePlayer(other);
     }
+
     private void InitGlobal()
     {
         if (GlobalObject == null)
@@ -163,5 +167,9 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
             player.transform.FindChild("PlayerBody").FindChild("Body").GetComponent<MeshRenderer>().material = MaterialBlue;
             player.transform.FindChild("PlayerFeet").GetComponent<MeshRenderer>().material = MaterialBlue;
         }
+    }
+    public void ReturnToLobby()
+    {
+        GlobalObject.GetComponent<GlobalScript>().Reset();
     }
 }

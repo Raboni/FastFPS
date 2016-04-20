@@ -52,6 +52,7 @@ public class ShopScript : MonoBehaviour //by Kevin and Robin
                         playerStats.primaryRanged = weapon;
                         playerStats.credits -= weapon.Cost;
                         weapon.Bought = true;
+                        playerStats.UpdateMax();
                     }
                 }
                 else
@@ -59,6 +60,7 @@ public class ShopScript : MonoBehaviour //by Kevin and Robin
                     if (GUILayout.Button(weapon.Name))
                     {
                         playerStats.primaryRanged = weapon;
+                        playerStats.UpdateMax();
                     }
                 }
             }
