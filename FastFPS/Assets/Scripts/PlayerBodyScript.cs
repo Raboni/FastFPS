@@ -39,7 +39,7 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
         //transform.rotation.SetLookRotation(camera.transform.forward, transform.up);
 
         //update weapon model
-        transform.FindChild("WeaponRight").GetComponent<MeshFilter>().mesh = stats.primaryRanged.Model;
+        transform.FindChild("WeaponRight").GetComponent<MeshFilter>().mesh = stats.EquipedRanged.Model;
         //transform.FindChild("WeaponLeft").GetComponent<MeshFilter>().mesh = stats.primaryMelee.Model;
 
         //make time tick

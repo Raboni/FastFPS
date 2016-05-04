@@ -13,11 +13,6 @@ public class GlobalScript : Photon.MonoBehaviour
     public int[] TeamScore = new int[3];
     public List<int> PlayerKills = new List<int>();
     public List<int> PlayerDeaths = new List<int>();
-
-	// Use this for initialization
-	void Start ()
-    {
-	}
 	
 	// Update is called once per frame
 	void Update ()

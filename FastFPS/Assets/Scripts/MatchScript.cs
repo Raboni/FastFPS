@@ -28,7 +28,7 @@ public class MatchScript : MonoBehaviour
 	public void Init ()
     {
         scriptmanager = GameObject.FindGameObjectWithTag("ScriptManager");
-        globalObject = scriptmanager.GetComponent<ServerScript>().GlobalObject;
+        globalObject = gameObject;
         gamemodes = scriptmanager.transform.FindChild("GameModes").GetComponents<GameModeScript>();
         initialized = true;
 	}
@@ -128,6 +128,38 @@ public class MatchScript : MonoBehaviour
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.EndArea();
+        }
+    }
+
+    void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.isWriting)
+        {
+            //send mode
+            stream.SendNext(currentMode);
+            //send time
+            stream.SendNext(time);
+            //send start
+            stream.SendNext(MatchStarted);
+
+            //send win
+            stream.SendNext(showWinScreen);
+            if (showWinScreen)
+                stream.SendNext(winnerName);
+        }
+        else
+        {
+            //get mode
+            currentMode = (int)stream.ReceiveNext();
+            //get time
+            time = (float)stream.ReceiveNext();
+            //get start
+            MatchStarted = (bool)stream.ReceiveNext();
+
+            //send win
+            showWinScreen = (bool)stream.ReceiveNext();
+            if (showWinScreen)
+                winnerName = (string)stream.ReceiveNext();
         }
     }
 

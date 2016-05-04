@@ -38,7 +38,7 @@ public class playerMovement : MonoBehaviour //by Linus and Robin
         //speed = player.GetComponent<PlayerStats>().Speed;
         //jumpPower = player.GetComponent<PlayerStats>().JumpPower;
 
-        Debug.Log("Initialized");
+        Debug.Log("Movement Initialized");
         Cursor.visible = false;
 	}
 	

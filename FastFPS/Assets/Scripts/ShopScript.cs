@@ -49,18 +49,18 @@ public class ShopScript : MonoBehaviour //by Kevin and Robin
                 {
                     if (GUILayout.Button(weapon.Name + " (" + weapon.Cost + ")") && playerStats.credits >= weapon.Cost)
                     {
-                        playerStats.primaryRanged = weapon;
+                        playerStats.EquipedRanged = weapon;
                         playerStats.credits -= weapon.Cost;
                         weapon.Bought = true;
-                        playerStats.UpdateMax();
+                        playerStats.UpdateStats();
                     }
                 }
                 else
                 {
                     if (GUILayout.Button(weapon.Name))
                     {
-                        playerStats.primaryRanged = weapon;
-                        playerStats.UpdateMax();
+                        playerStats.EquipedRanged = weapon;
+                        playerStats.UpdateStats();
                     }
                 }
             }

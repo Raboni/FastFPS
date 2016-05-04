@@ -31,8 +31,8 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
             //initialize shop
             GetComponent<ShopScript>().init();
             //start match
-            GetComponent<MatchScript>().Init();
-            GetComponent<MatchScript>().MatchStarted = true;
+            GlobalObject.GetComponent<MatchScript>().Init();
+            GlobalObject.GetComponent<MatchScript>().MatchStarted = true;
 
             doInit = false;
         }
@@ -157,15 +157,15 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
         {
             PlayerTeam = 2;
             PhotonNetwork.player.SetTeam(PunTeams.Team.red);
-            player.transform.FindChild("PlayerBody").FindChild("Body").GetComponent<MeshRenderer>().material = MaterialRed;
-            player.transform.FindChild("PlayerFeet").GetComponent<MeshRenderer>().material = MaterialRed;
+            player.transform.FindChild("PlayerBody").FindChild("Body").GetComponent<MaterialApplier>().material = MaterialRed;
+            player.transform.FindChild("PlayerFeet").GetComponent<MaterialApplier>().material = MaterialRed;
         }
         else if (global.TeamPlayerAmount[2] >= global.TeamPlayerAmount[1])
         {
             PlayerTeam = 1;
             PhotonNetwork.player.SetTeam(PunTeams.Team.blue);
-            player.transform.FindChild("PlayerBody").FindChild("Body").GetComponent<MeshRenderer>().material = MaterialBlue;
-            player.transform.FindChild("PlayerFeet").GetComponent<MeshRenderer>().material = MaterialBlue;
+            player.transform.FindChild("PlayerBody").FindChild("Body").GetComponent<MaterialApplier>().material = MaterialBlue;
+            player.transform.FindChild("PlayerFeet").GetComponent<MaterialApplier>().material = MaterialBlue;
         }
     }
     public void ReturnToLobby()

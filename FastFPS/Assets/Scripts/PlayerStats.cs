@@ -44,11 +44,10 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
     public byte Ammo = 10;
 
     //weapon equiped
-    public WeaponScript primaryRanged;
-    public WeaponScript secondaryRanged;
-
-    public WeaponScript secondaryMelee;
-    public WeaponScript primaryMelee;
+    public WeaponScript EquipedRanged;
+    public WeaponScript EquipedMelee;
+    public int RangedId = 0;
+    public int MeleeId = 0;
 
     //shop
     bool[] perksBought = new bool[2];
@@ -57,8 +56,8 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
 	// Use this for initialization
 	void Start ()
     {
-        ResetMax();
-        primaryRanged = GameObject.FindGameObjectWithTag("ScriptManager").transform.FindChild("Weapons").GetComponents<WeaponScript>()[0];
+        EquipedRanged = GameObject.FindGameObjectWithTag("ScriptManager").transform.FindChild("Weapons").GetComponents<WeaponScript>()[0];
+        UpdateStats();
 	}
 	
 	// Update is called once per frame
@@ -72,13 +71,31 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
             Respawn();
             HitPoints = MaxHitPoints;
         }
+        UpdateStats();
 	}
-    public void UpdateMax()
+    public void UpdateStats()
     {
         ResetMax();
 
         //set perks & weapon stats
-        SetWeaponStats(primaryRanged);
+        SetWeaponStats(EquipedRanged);
+    }
+    void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.isWriting)
+        {
+            //send weapons
+            stream.SendNext(RangedId);
+            stream.SendNext(MeleeId);
+        }
+        else
+        {
+            //get weapons
+            RangedId = (int)stream.ReceiveNext();
+            EquipedRanged = GameObject.FindGameObjectWithTag("ScriptManager").transform.FindChild("Weapons").GetComponents<WeaponScript>()[RangedId];
+            MeleeId = (int)stream.ReceiveNext();
+            EquipedMelee = GameObject.FindGameObjectWithTag("ScriptManager").transform.FindChild("Weapons").GetComponents<WeaponScript>()[MeleeId];
+        }
     }
 
     private void ResetMax()
