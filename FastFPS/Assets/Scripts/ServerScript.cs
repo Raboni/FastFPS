@@ -12,6 +12,7 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
     public GameObject GlobalObject = null;
     bool connecting = false;
     bool doInit = false;
+    bool teamSelected = false;
     public Material MaterialBlue;
     public Material MaterialRed;
 
@@ -24,18 +25,20 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
     }
     void Update ()
     {
-        if (doInit)
+        if (doInit && teamSelected)
         {
+            SpawnPlayer();
             InitGlobal();
-            selectTeam();
+            //selectTeam();
             //initialize shop
             GetComponent<ShopScript>().init();
             //start match
             GlobalObject.GetComponent<MatchScript>().Init();
             GlobalObject.GetComponent<MatchScript>().MatchStarted = true;
-
+            
             doInit = false;
         }
+        UpdateTeamColor();
     }
 
     void OnDestroy()
@@ -69,10 +72,30 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
                 Connect();
             }
         }
-        else if (!doInit)
+        else if (!teamSelected)
         {
-            //debug
-            //GUILayout.Label("global:" + GameObject.FindGameObjectsWithTag("Global").Length);
+            GUILayout.BeginArea(new Rect(Vector2.zero, new Vector2(Screen.width, Screen.height)));
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            GUILayout.BeginVertical();
+            GUILayout.FlexibleSpace();
+
+            if (GUILayout.Button("Blue Team"))
+            {
+                PlayerTeam = 0;
+                teamSelected = true;
+            }
+            if (GUILayout.Button("Red Team"))
+            {
+                PlayerTeam = 1;
+                teamSelected = true;
+            }
+
+            GUILayout.FlexibleSpace();
+            GUILayout.EndVertical();
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            GUILayout.EndArea();
         }
     }
     void Connect()
@@ -100,15 +123,7 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
     }
     void OnJoinedRoom()
     {
-        //create clientPlayer on the network
-        player = PhotonNetwork.Instantiate("PlayerObjects", GetComponent<SpawnScript>().Respawn(PlayerTeam), Quaternion.identity, 0);
-        player.GetComponent<playerMovement>().enabled = true;
-        player.GetComponent<PlayerStats>().clientPlayer = PhotonNetwork.player;
-        player.transform.FindChild("PlayerBody").GetComponent<PlayerBodyScript>().SetLocal();
-        //disable starting camera
-        Camera2Disable.SetActive(false);
-        //hide your player from your camera
-        player.transform.FindChild("PlayerBody").FindChild("Body").gameObject.layer = 8;
+        
 
         //initialize
         doInit = true;
@@ -153,23 +168,55 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
         GlobalScript global = GlobalObject.GetComponent<GlobalScript>();
         global.UpdateTeamPlayerAmount();
         //select team
-        if (global.TeamPlayerAmount[1] > global.TeamPlayerAmount[2])
+        if (global.TeamPlayerAmount[0] > global.TeamPlayerAmount[1])
         {
-            PlayerTeam = 2;
+            PlayerTeam = 1;
             PhotonNetwork.player.SetTeam(PunTeams.Team.red);
             player.transform.FindChild("PlayerBody").FindChild("Body").GetComponent<MaterialApplier>().material = MaterialRed;
             player.transform.FindChild("PlayerFeet").GetComponent<MaterialApplier>().material = MaterialRed;
         }
-        else if (global.TeamPlayerAmount[2] >= global.TeamPlayerAmount[1])
+        else if (global.TeamPlayerAmount[1] >= global.TeamPlayerAmount[0])
         {
-            PlayerTeam = 1;
+            PlayerTeam = 0;
             PhotonNetwork.player.SetTeam(PunTeams.Team.blue);
             player.transform.FindChild("PlayerBody").FindChild("Body").GetComponent<MaterialApplier>().material = MaterialBlue;
             player.transform.FindChild("PlayerFeet").GetComponent<MaterialApplier>().material = MaterialBlue;
         }
     }
+    private void SpawnPlayer()
+    {
+        //create clientPlayer on the network
+        player = PhotonNetwork.Instantiate("PlayerObjects", GetComponent<SpawnScript>().Respawn(PlayerTeam), Quaternion.identity, 0);
+        player.GetComponent<playerMovement>().enabled = true;
+        player.GetComponent<PlayerStats>().clientPlayer = PhotonNetwork.player;
+        player.transform.FindChild("PlayerBody").GetComponent<PlayerBodyScript>().SetLocal();
+        player.GetComponent<TeamMember>().Team = PlayerTeam;
+        //disable starting camera
+        Camera2Disable.SetActive(false);
+        //hide your player from your camera
+        player.transform.FindChild("PlayerBody").FindChild("Body").gameObject.layer = 8;
+    }
     public void ReturnToLobby()
     {
         GlobalObject.GetComponent<GlobalScript>().Reset();
+    }
+    public void UpdateTeamColor()
+    {
+        //update team color
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        for (int i = 0; i < players.Length; i++)
+        {
+            if (players[i].GetComponent<TeamMember>().Team != 2)
+            {
+                Material m = MaterialRed;
+                if (players[i].GetComponent<TeamMember>().Team == 0)
+                    m = MaterialBlue;
+                else if (players[i].GetComponent<TeamMember>().Team == 1)
+                    m = MaterialRed;
+                players[i].transform.FindChild("PlayerBody").FindChild("Body").GetComponent<MaterialApplier>().material = m;
+                players[i].transform.FindChild("PlayerFeet").GetComponent<MaterialApplier>().material = m;
+                //Debug.Log("updated color to " + m.ToString());
+            }
+        }
     }
 }

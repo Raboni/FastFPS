@@ -8,6 +8,7 @@ public class GlobalScript : Photon.MonoBehaviour
     public int PlayerAmount = 0;
     public int[] TeamPlayerAmount = new int[3];
     public List<PhotonPlayer> PlayerList = new List<PhotonPlayer>();
+    bool playerAdded = false;
 
     //match info
     public int[] TeamScore = new int[3];
@@ -37,6 +38,7 @@ public class GlobalScript : Photon.MonoBehaviour
             {
                 stream.SendNext(PlayerList[i]);
             }
+            playerAdded = false;
 
             //send kills
             stream.SendNext(PlayerKills.Count);
@@ -61,7 +63,8 @@ public class GlobalScript : Photon.MonoBehaviour
             {
                 plTemp.Add((PhotonPlayer)stream.ReceiveNext());
             }
-            PlayerList = plTemp;
+            if (!playerAdded)
+                PlayerList = plTemp;
 
             //get kills
             int pkLength = (int)stream.ReceiveNext();
@@ -188,6 +191,7 @@ public class GlobalScript : Photon.MonoBehaviour
     /// <param name="player">Player to add</param>
     public void AddPlayer(PhotonPlayer player)
     {
+        playerAdded = true;
         PlayerList.Add(player);
         PlayerKills.Add(0);
         PlayerDeaths.Add(0);

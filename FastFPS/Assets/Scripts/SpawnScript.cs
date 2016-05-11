@@ -12,12 +12,8 @@ public class SpawnScript : MonoBehaviour //by Linus
         x = Random.Range(SpawnArea[Team].GetComponent<Collider>().bounds.min.x, SpawnArea[Team].GetComponent<Collider>().bounds.max.x);
         float z;
         z = Random.Range(SpawnArea[Team].GetComponent<Collider>().bounds.min.z, SpawnArea[Team].GetComponent<Collider>().bounds.max.z);
-        Vector3 SpawnPosition = new Vector3(x, 0, z);
+        Vector3 SpawnPosition = new Vector3(x, 0.5f, z);
+        //TODO: rotate position for rotated spawn areas
         return SpawnPosition;
-    }
-
-    void Update()
-    {
-        
     }
 }

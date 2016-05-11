@@ -83,8 +83,15 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
             Physics.Raycast(raycast, out rayHit);
             if (rayHit.transform == transform)
                 Debug.Log("STOP HITTING YOURSELF!");
-            if (rayHit.transform.tag == "Player")
+            if (rayHit.transform.tag == "Player" && rayHit.transform.GetComponentInParent<TeamMember>().Team != transform.GetComponentInParent<TeamMember>().Team)
+            {
+                if (!WillLive(rayHit, (int)hitParam[0], stats.ArmorPenetration))
+                {
+                    GetComponentInParent<TeamMember>().Kills++;
+                    rayHit.transform.GetComponentInParent<TeamMember>().Deaths++;
+                }
                 rayHit.transform.GetComponent<PlayerBodyScript>().GetComponent<PhotonView>().RPC("HitPlayer", PhotonTargets.AllBufferedViaServer, hitParam);
+            }
             else if (rayHit.transform.tag == "Target")
                 rayHit.transform.GetComponent<TargetScript>().GetComponent<PhotonView>().RPC("Hit", PhotonTargets.All, stats.Damage);
             else
@@ -120,7 +127,7 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
         PlayerStats stats = transform.parent.GetComponent<PlayerStats>();
         GlobalScript global = scriptManager.GetComponent<ServerScript>().GlobalObject.GetComponent<GlobalScript>();
         int playerRecievedId = global.GetPlayerId(PhotonNetwork.player);
-        if (stats.Armor > 0 && !stats.ArmorPenetration)
+        if (stats.Armor > 0 && !stats.ArmorPenetration)//armor pen error
         {
             stats.HitPoints -= amt / 2;
             stats.Armor -= amt;
@@ -154,6 +161,25 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
         }
         else
             Debug.Log("Unknown Target");*/
+    }
+    private bool WillLive(RaycastHit hit, int dmg, bool armorPen)
+    {
+        int hp = hit.transform.GetComponentInParent<PlayerStats>().HitPoints;
+        int armor = hit.transform.GetComponentInParent<PlayerStats>().Armor;
+
+        if(armor > 0 && !armorPen)
+        {
+            hp -= dmg / 2;
+        }
+        else
+        {
+            hp -= dmg;
+        }
+
+        if (hp <= 0)
+            return false;
+        else
+            return true;
     }
     /*[PunRPC]
     public void KilledPlayer()

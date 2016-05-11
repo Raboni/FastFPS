@@ -68,6 +68,7 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
             Armor = 0;
         if (HitPoints <= 0)
         {
+            GetComponent<TeamMember>().Deaths++;
             Respawn();
             HitPoints = MaxHitPoints;
         }

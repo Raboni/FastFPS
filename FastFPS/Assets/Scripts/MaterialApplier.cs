@@ -10,7 +10,7 @@ public class MaterialApplier : MonoBehaviour
     {
         if (material != null)
         {
-            Debug.Log("color not null");
+            //Debug.Log("color not null");
             GetComponent<MeshRenderer>().material = material;
 
             int l = GetComponent<MeshRenderer>().materials.Length;
@@ -20,4 +20,19 @@ public class MaterialApplier : MonoBehaviour
             }
         }
 	}
+
+    /*void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.isWriting)
+        {
+            stream.SendNext(material);
+            Debug.Log(name + " sent the material: " + material.ToString());
+        }
+        else
+        {
+            Material m = (Material)stream.ReceiveNext();
+            Debug.Log("material of " + name + " changed to: " + m.ToString());
+            material = m;
+        }
+    }*/
 }
