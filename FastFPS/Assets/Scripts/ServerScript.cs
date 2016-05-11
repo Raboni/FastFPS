@@ -9,7 +9,7 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
     int PlayerTeam = 0;
     public GameObject Camera2Disable;
     public static GameObject scriptManager;
-    public GameObject GlobalObject = null;
+    //public GameObject GlobalObject = null;
     bool connecting = false;
     bool doInit = false;
     bool teamSelected = false;
@@ -28,13 +28,13 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
         if (doInit && teamSelected)
         {
             SpawnPlayer();
-            InitGlobal();
+            //InitGlobal();
             //selectTeam();
             //initialize shop
             GetComponent<ShopScript>().init();
             //start match
-            GlobalObject.GetComponent<MatchScript>().Init();
-            GlobalObject.GetComponent<MatchScript>().MatchStarted = true;
+            //GlobalObject.GetComponent<MatchScript>().Init();
+            //GlobalObject.GetComponent<MatchScript>().MatchStarted = true;
             
             doInit = false;
         }
@@ -138,10 +138,10 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
     {
         //find other clientPlayer with id and destroy him
         PhotonNetwork.DestroyPlayerObjects(other);
-        GlobalObject.GetComponent<GlobalScript>().RemovePlayer(other);
+        //GlobalObject.GetComponent<GlobalScript>().RemovePlayer(other);
     }
 
-    private void InitGlobal()
+    /*private void InitGlobal()
     {
         if (GlobalObject == null)
         {
@@ -162,8 +162,8 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
         GlobalObject.GetComponent<GlobalScript>().AddPlayer(PhotonNetwork.player);
 
         Debug.Log("Global Initialized");
-    }
-    private void selectTeam()
+    }*/
+    /*private void selectTeam()
     {
         GlobalScript global = GlobalObject.GetComponent<GlobalScript>();
         global.UpdateTeamPlayerAmount();
@@ -182,7 +182,7 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
             player.transform.FindChild("PlayerBody").FindChild("Body").GetComponent<MaterialApplier>().material = MaterialBlue;
             player.transform.FindChild("PlayerFeet").GetComponent<MaterialApplier>().material = MaterialBlue;
         }
-    }
+    }*/
     private void SpawnPlayer()
     {
         //create clientPlayer on the network
@@ -198,7 +198,7 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
     }
     public void ReturnToLobby()
     {
-        GlobalObject.GetComponent<GlobalScript>().Reset();
+        //GlobalObject.GetComponent<GlobalScript>().Reset();
     }
     public void UpdateTeamColor()
     {
