@@ -68,7 +68,7 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
             stats.Ammo--;
             //damage = stats.Damage;
             //bool kill = false;
-            object[] hitParam = new object[2];
+            object[] hitParam = new object[1];
             hitParam[0] = stats.Damage;
             //hitParam[1] = global.GetPlayerId(PhotonNetwork.player);
             //hitParam[1] = transform;

@@ -107,9 +107,13 @@
      <Compile Include="Assets\Scripts\BulletScript.cs" />
      <Compile Include="Assets\Scripts\CameraScript.cs" />
      <Compile Include="Assets\Scripts\CustomMouseLook.cs" />
+     <Compile Include="Assets\Scripts\GameModeScript.cs" />
      <Compile Include="Assets\Scripts\GlobalScript.cs" />
      <Compile Include="Assets\Scripts\GroundCollisionScript.cs" />
+     <Compile Include="Assets\Scripts\HighscoreSQL.cs" />
      <Compile Include="Assets\Scripts\HudScript.cs" />
+     <Compile Include="Assets\Scripts\MatchScript.cs" />
+     <Compile Include="Assets\Scripts\MaterialApplier.cs" />
      <Compile Include="Assets\Scripts\MeleeScript.cs" />
      <Compile Include="Assets\Scripts\NetworkManager.cs" />
      <Compile Include="Assets\Scripts\NetworkPlayer.cs" />
@@ -120,6 +124,7 @@
      <Compile Include="Assets\Scripts\ShopScript.cs" />
      <Compile Include="Assets\Scripts\SpawnScript.cs" />
      <Compile Include="Assets\Scripts\TargetScript.cs" />
+     <Compile Include="Assets\Scripts\TeamMember.cs" />
      <Compile Include="Assets\Scripts\WeaponScript.cs" />
      <Compile Include="Assets\Scripts\playerMovement.cs" />
      <None Include="Assets\Plugins\Photon3Unity3D.xml" />

@@ -136,7 +136,7 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
     private void Respawn()
     {
         //get team
-        int team;
+        /*int team;
         switch (clientPlayer.GetTeam())
         {
             case PunTeams.Team.none:
@@ -151,9 +151,9 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
             default:
                 team = 0;
                 break;
-        }
+        }*/
         //respawn
-        transform.FindChild("PlayerFeet").position = GameObject.FindGameObjectWithTag("ScriptManager").GetComponent<SpawnScript>().Respawn(team);
+        transform.FindChild("PlayerFeet").position = GameObject.FindGameObjectWithTag("ScriptManager").GetComponent<SpawnScript>().Respawn(GetComponent<TeamMember>().Team);
         Debug.Log("Respawn");
     }
 }
