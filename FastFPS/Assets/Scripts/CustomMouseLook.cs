@@ -56,9 +56,6 @@ public class CustomMouseLook : MonoBehaviour //standard asset MouseLook script m
 
             playerBody.transform.localEulerAngles = new Vector3(-rotationY, playerBody.transform.localEulerAngles.y, 0);
         }
-
-        if (Input.GetMouseButtonDown(0))
-            playerBody.GetComponent<PlayerBodyScript>().SendMessage("Shoot"); //shoot via player body
     }
 
     void Init()

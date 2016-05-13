@@ -47,7 +47,7 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
     public WeaponScript EquipedRanged;
     public WeaponScript EquipedMelee;
     public int RangedId = 0;
-    public int MeleeId = 0;
+    //public int MeleeId = 0;
 
     //shop
     bool[] perksBought = new bool[2];
@@ -56,7 +56,13 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
 	// Use this for initialization
 	void Start ()
     {
-        EquipedRanged = GameObject.FindGameObjectWithTag("ScriptManager").transform.FindChild("Weapons").GetComponents<WeaponScript>()[0];
+        int pId = 0;
+        EquipedRanged = GetPistol(out pId);
+        RangedId = pId;
+        if (EquipedRanged == null)
+            Debug.LogError("No Starter Gun Found");
+        else
+            Debug.Log("Pistol clip: " + EquipedRanged.ClipSize);
         UpdateStats();
 	}
 	
@@ -69,10 +75,11 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
         if (HitPoints <= 0)
         {
             GetComponent<TeamMember>().Deaths++;
+            UpdateStats();
             Respawn();
             HitPoints = MaxHitPoints;
+            Ammo = ClipSize;
         }
-        UpdateStats();
 	}
     public void UpdateStats()
     {
@@ -80,6 +87,9 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
 
         //set perks & weapon stats
         SetWeaponStats(EquipedRanged);
+        Debug.Log("Clip: " + ClipSize);
+        Debug.Log("RoF: " + RoF);
+        //Debug.Log("dt: " + Time.deltaTime);
     }
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -87,15 +97,15 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
         {
             //send weapons
             stream.SendNext(RangedId);
-            stream.SendNext(MeleeId);
+            //stream.SendNext(MeleeId);
         }
         else
         {
             //get weapons
             RangedId = (int)stream.ReceiveNext();
             EquipedRanged = GameObject.FindGameObjectWithTag("ScriptManager").transform.FindChild("Weapons").GetComponents<WeaponScript>()[RangedId];
-            MeleeId = (int)stream.ReceiveNext();
-            EquipedMelee = GameObject.FindGameObjectWithTag("ScriptManager").transform.FindChild("Weapons").GetComponents<WeaponScript>()[MeleeId];
+            //MeleeId = (int)stream.ReceiveNext();
+            //EquipedMelee = GameObject.FindGameObjectWithTag("ScriptManager").transform.FindChild("Weapons").GetComponents<WeaponScript>()[MeleeId];
         }
     }
 
@@ -117,8 +127,7 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
     private void SetWeaponStats(WeaponScript weapon)
     {
         Damage = weapon.Damage;
-        ClipAmount = weapon.MaxClipAmount;
-        ClipSize = weapon.MaxClipSize;
+        ClipSize = weapon.ClipSize;
         RoF = weapon.RoF;
         ReloadSpeed = weapon.ReloadSpeed;
         Range = weapon.Range;
@@ -126,7 +135,6 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
     private void SetWeaponStats(MeleeScript weapon)
     {
         Damage = weapon.Damage;
-        ClipAmount = 1;
         ClipSize = 1;
         RoF = weapon.RoF;
         ReloadSpeed = 0;
@@ -155,5 +163,19 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
         //respawn
         transform.FindChild("PlayerFeet").position = GameObject.FindGameObjectWithTag("ScriptManager").GetComponent<SpawnScript>().Respawn(GetComponent<TeamMember>().Team);
         Debug.Log("Respawn");
+    }
+    private WeaponScript GetPistol(out int id)
+    {
+        WeaponScript[] weapons = GameObject.FindGameObjectWithTag("ScriptManager").transform.FindChild("Weapons").GetComponents<WeaponScript>();
+        for (int i = 0; i < weapons.Length; i++)
+        {
+            if (weapons[i].Name == "Pistol")
+            {
+                id = i;
+                return weapons[i];
+            }
+        }
+        id = 0;
+        return null;
     }
 }

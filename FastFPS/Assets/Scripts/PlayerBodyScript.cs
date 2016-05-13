@@ -16,12 +16,14 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
     //private int damage = 1;
     //private float RoF = 0.3f;
     private float time = 0f;
+    public bool Reloading = false;
 
     GameObject scriptManager;
 
 	// Use this for initialization
 	void Start ()
     {
+        Debug.Log("Body Initialized");
         //ignore collision between body and feet
         if (feetObject != null)
         {
@@ -45,6 +47,19 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
         //make time tick
         time += Time.deltaTime;
 
+        //shoot
+        if (Input.GetMouseButton(0))
+            Shoot();
+        //reload
+        if (stats.Ammo <= 0)
+            Reload();
+        else if (Input.GetKeyDown(KeyCode.R))
+            Reload();
+        if (time < 0)
+            Reloading = true;
+        else
+            Reloading = false;
+
         //body positioning (follow feet)
         transform.position = feetObject.transform.position + bodyOffset;
 	}
@@ -64,7 +79,10 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
         //shooting
         if (time >= stats.RoF)
         {
+            //Debug.Log("Time: " + time);
+            //Debug.Log("RoF: " + stats.RoF);
             Debug.Log("Pew!");
+            time = 0f;
             stats.Ammo--;
             //damage = stats.Damage;
             //bool kill = false;
@@ -108,19 +126,13 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
                 PhotonNetwork.player.AddScore(1);
                 kill = false;
             }*/
-
-            time = 0f;
-        }
-        if (stats.Ammo <= 0)
-        {
-            Reload();
         }
     }
     private void Reload()
     {
-        PlayerStats stats = transform.parent.GetComponent<PlayerStats>();
+        PlayerStats stats = transform.GetComponentInParent<PlayerStats>();
+        stats.UpdateStats();
         stats.Ammo = stats.ClipSize;
-        stats.ClipAmount--;
         time = -stats.ReloadSpeed;
     }
     [PunRPC]

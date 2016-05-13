@@ -29,6 +29,7 @@ public class HudScript : MonoBehaviour { //by Oskar and Robin
     void OnGUI()
     {
         PlayerStats stats = GetComponent<PlayerStats>();
+        bool reloading = GetComponentInChildren <PlayerBodyScript>().Reloading;
 
         GUILayout.BeginArea(new Rect(Vector2.zero, new Vector2(Screen.width, Screen.height)));
         GUILayout.BeginVertical();
@@ -38,13 +39,17 @@ public class HudScript : MonoBehaviour { //by Oskar and Robin
         GUILayout.EndArea();
 
         GUILayout.BeginArea(new Rect(Vector2.zero, new Vector2(Screen.width, Screen.height)));
-        GUILayout.BeginVertical();
-        GUILayout.FlexibleSpace();
         GUILayout.BeginHorizontal();
         GUILayout.FlexibleSpace();
-        GUILayout.Label("Ammo: " + stats.Ammo);
-        GUILayout.EndHorizontal();
+        GUILayout.BeginVertical();
+        GUILayout.FlexibleSpace();
+        if (!reloading)
+            GUILayout.Label("Ammo: " + stats.Ammo);
+        else
+            GUILayout.Label("Reloading");
+        GUILayout.Label("Weapon: " + stats.EquipedRanged.Name);
         GUILayout.EndVertical();
+        GUILayout.EndHorizontal();
         GUILayout.EndArea();
     }
 }

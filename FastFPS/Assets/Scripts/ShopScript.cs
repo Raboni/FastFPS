@@ -45,7 +45,7 @@ public class ShopScript : MonoBehaviour //by Kevin and Robin
             GUILayout.FlexibleSpace();
             foreach (WeaponScript weapon in weaponArray)
             {
-                if (!weapon.Bought)
+                if (!weapon.Bought && weapon.Ranged)
                 {
                     if (GUILayout.Button(weapon.Name + " (" + weapon.Cost + ")") && playerStats.credits >= weapon.Cost)
                     {
@@ -55,7 +55,7 @@ public class ShopScript : MonoBehaviour //by Kevin and Robin
                         playerStats.UpdateStats();
                     }
                 }
-                else
+                else if (weapon.Ranged)
                 {
                     if (GUILayout.Button(weapon.Name))
                     {

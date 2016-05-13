@@ -113,6 +113,7 @@
      <Compile Include="Assets\Scripts\HighscoreSQL.cs" />
      <Compile Include="Assets\Scripts\HudScript.cs" />
      <Compile Include="Assets\Scripts\MatchScript.cs" />
+     <Compile Include="Assets\Scripts\MatchScriptLocal.cs" />
      <Compile Include="Assets\Scripts\MaterialApplier.cs" />
      <Compile Include="Assets\Scripts\MeleeScript.cs" />
      <Compile Include="Assets\Scripts\NetworkManager.cs" />
