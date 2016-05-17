@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class ShopScript : MonoBehaviour //by Kevin and Robin
 {
     public PlayerStats playerStats;
+    public GameObject scriptmanager;
 
     public WeaponScript[] weaponArray;
 
@@ -16,8 +17,9 @@ public class ShopScript : MonoBehaviour //by Kevin and Robin
     {
         playerSpawned = true;
 
-        playerStats = ServerScript.player.transform.FindChild("PlayerBody").GetComponent<PlayerStats>();
-        weaponArray = GameObject.FindGameObjectWithTag("ScriptManager").transform.FindChild("Weapons").GetComponents<WeaponScript>();
+        playerStats = ServerScript.player.GetComponent<PlayerStats>();
+        scriptmanager = GameObject.FindGameObjectWithTag("ScriptManager");
+        weaponArray = scriptmanager.transform.FindChild("Weapons").GetComponents<WeaponScript>();
 
         Debug.Log("shop init");
 	}
@@ -38,11 +40,13 @@ public class ShopScript : MonoBehaviour //by Kevin and Robin
     {
         if (Open && playerSpawned)
         {
+            scriptmanager.GetComponent<CustomMouseLook>().enabled = false;
             GUILayout.BeginArea(new Rect(Vector2.zero, new Vector2(Screen.width, Screen.height)));
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
             GUILayout.BeginVertical();
             GUILayout.FlexibleSpace();
+            GUILayout.Label("Credits: " + playerStats.credits);
             foreach (WeaponScript weapon in weaponArray)
             {
                 if (!weapon.Bought && weapon.Ranged)
@@ -70,5 +74,7 @@ public class ShopScript : MonoBehaviour //by Kevin and Robin
             GUILayout.EndHorizontal();
             GUILayout.EndArea();
         }
+        else if (playerSpawned)
+            scriptmanager.GetComponent<CustomMouseLook>().enabled = true;
     }
 }

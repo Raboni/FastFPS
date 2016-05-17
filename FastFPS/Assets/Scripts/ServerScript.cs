@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.Networking;
 
-public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
+public class ServerScript : Photon.MonoBehaviour //by Quill18 modified (a lot) by Robin
 {
     //public bool Online = true;
     public static GameObject player;
@@ -190,7 +190,9 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified by Robin
         player.GetComponent<playerMovement>().enabled = true;
         player.GetComponent<PlayerStats>().clientPlayer = PhotonNetwork.player;
         player.transform.FindChild("PlayerBody").GetComponent<PlayerBodyScript>().SetLocal();
+        player.GetComponent<TeamMember>().Name = PhotonNetwork.playerName;
         player.GetComponent<TeamMember>().Team = PlayerTeam;
+        scriptManager.GetComponent<MatchScriptLocal>().MatchStarted = true;
         //disable starting camera
         Camera2Disable.SetActive(false);
         //hide your player from your camera

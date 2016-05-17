@@ -3,6 +3,7 @@ using System.Collections;
 
 public class TeamMember : MonoBehaviour
 {
+    public string Name = "New Player";
     public int Team = 0;
     public int Kills = 0;
     public int Deaths = 0;

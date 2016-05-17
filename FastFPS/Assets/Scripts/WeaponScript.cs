@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Audio;
 
 public class WeaponScript : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class WeaponScript : MonoBehaviour
     //game
     public Mesh Model;
     public Vector3 Offset = Vector3.zero;
+    public AudioClip sound;
 
     public WeaponScript(int dmg, byte clipSize, byte clipAmt, float RoF, float reloadSpeed, int range)
     {

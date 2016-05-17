@@ -19,6 +19,7 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
     public bool Reloading = false;
 
     GameObject scriptManager;
+    AudioSource audio;
 
 	// Use this for initialization
 	void Start ()
@@ -31,6 +32,7 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
             Physics.IgnoreCollision(feetObject.GetComponent<Collider>(), GetComponent<Collider>());
         }
         scriptManager = GameObject.FindGameObjectWithTag("ScriptManager");
+        audio = GetComponent<AudioSource>();
     }
 	
 	// Update is called once per frame
@@ -84,6 +86,7 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
             Debug.Log("Pew!");
             time = 0f;
             stats.Ammo--;
+            PlaySound(GetComponentInParent<PlayerStats>().EquipedRanged.sound);
             //damage = stats.Damage;
             //bool kill = false;
             object[] hitParam = new object[1];
@@ -107,6 +110,7 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
                 {
                     if (!WillLive(rayHit, (int)hitParam[0], stats.ArmorPenetration))
                     {
+                        GetComponentInParent<PlayerStats>().credits += 100;
                         GetComponentInParent<TeamMember>().Kills++;
                         rayHit.transform.GetComponentInParent<TeamMember>().Deaths++;
                     }
@@ -211,4 +215,10 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
         public int damage;
         //public PhotonPlayer player;
     }*/
+    private void PlaySound(AudioClip clip)
+    {
+        //Debug.Log(clip.name);
+        audio.clip = clip;
+        audio.Play();
+    }
 }

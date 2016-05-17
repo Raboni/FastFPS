@@ -51,7 +51,7 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
 
     //shop
     bool[] perksBought = new bool[2];
-    public int credits = 100;
+    public int credits = 0;
 
 	// Use this for initialization
 	void Start ()

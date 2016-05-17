@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class MatchScriptLocal : MonoBehaviour
+public class MatchScriptLocal : MonoBehaviour //by Robin
 {
     GameModeScript[] gamemodes;
     GameObject scriptmanager;
@@ -10,6 +10,7 @@ public class MatchScriptLocal : MonoBehaviour
 
     int currentMode = 1;
 
+    bool showScoreboard = false;
     bool showWinScreen = false;
     string winnerName = "winner";
 
@@ -97,6 +98,49 @@ public class MatchScriptLocal : MonoBehaviour
             GUILayout.EndHorizontal();
             GUILayout.EndArea();
         }
+        else if (MatchStarted)
+        {
+            GUILayout.BeginArea(new Rect(Vector2.zero, new Vector2(Screen.width, Screen.height)));
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            GUILayout.Label("Blue " + TeamScore(0) + " - " + TeamScore(1) + " Red");
+            GUILayout.BeginVertical();
+            GUILayout.FlexibleSpace();
+            GUILayout.FlexibleSpace();
+            GUILayout.EndVertical();
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            GUILayout.EndArea();
+        }
+        if (showScoreboard && !showWinScreen)
+        {
+            GUILayout.BeginArea(new Rect(Vector2.zero, new Vector2(Screen.width, Screen.height)));
+            GUILayout.BeginVertical();
+            GUILayout.FlexibleSpace();
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            List<GameObject> playerListBlue = PlayerList(0);
+            foreach (GameObject p in playerListBlue)
+            {
+                TeamMember tm = p.GetComponent<TeamMember>();
+                GUILayout.Label(tm.Name);
+                GUILayout.Space(32);
+                GUILayout.Label("K: " + tm.Kills.ToString());
+                GUILayout.Space(32);
+                GUILayout.Label("D: " + tm.Deaths.ToString());
+                GUILayout.BeginVertical();
+                GUILayout.FlexibleSpace();
+                GUILayout.EndVertical();
+            }
+            GUILayout.FlexibleSpace();
+            List<GameObject> playerListRed = PlayerList(1);
+            GUILayout.Label("");
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            GUILayout.FlexibleSpace();
+            GUILayout.EndVertical();
+            GUILayout.EndArea();
+        }
     }
 
     /// <summary>
@@ -126,6 +170,36 @@ public class MatchScriptLocal : MonoBehaviour
         }
     }
 
+    private List<GameObject> PlayerList(int team)
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        List<GameObject> playerList = new List<GameObject>();
+        for (int i = 0; i < players.Length; i++)
+        {
+            if (players[i].GetComponent<TeamMember>().Team == team)
+            {
+                if (playerList.Count == 0)
+                    playerList.Add(players[i]);
+                else
+                {
+                    bool foundPlace = false;
+                    for (int n = 0; n < playerList.Count; n++)
+                    {
+                        if (players[i].GetComponent<TeamMember>().Kills > playerList[n].GetComponent<TeamMember>().Kills)
+                        {
+                            playerList.Insert(n, players[i]);
+                            foundPlace = true;
+                            break;
+                        }
+                    }
+                    if (!foundPlace)
+                        playerList.Add(players[i]);
+                }
+            }
+        }
+        return playerList;
+    }
     private int TeamScore(int team)
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
