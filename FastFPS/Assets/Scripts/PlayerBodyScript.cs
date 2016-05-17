@@ -47,10 +47,13 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
         weapon.GetComponent<MeshFilter>().mesh = stats.EquipedRanged.Model;
         //transform.FindChild("WeaponLeft").GetComponent<MeshFilter>().mesh = stats.primaryMelee.Model;
         //update weapon rotation
-        raycast = new Ray(camera.transform.position + camera.transform.forward * 2, camera.transform.forward);
-        Physics.Raycast(raycast, out rayHit);
-        weapon.transform.LookAt(rayHit.point);
-        weapon.transform.Rotate(0, 180, 0);
+        if (local)
+        {
+            raycast = new Ray(camera.transform.position + camera.transform.forward * 2, camera.transform.forward);
+            Physics.Raycast(raycast, out rayHit);
+            weapon.transform.LookAt(rayHit.point);
+            weapon.transform.Rotate(0, 180, 0);
+        }
 
         //make time tick
         time += Time.deltaTime;
