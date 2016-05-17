@@ -11,6 +11,7 @@ public class MatchScriptLocal : MonoBehaviour //by Robin
     int currentMode = 1;
 
     bool showScoreboard = false;
+    public GameObject scoreboard;
     bool showWinScreen = false;
     string winnerName = "winner";
 
@@ -78,6 +79,12 @@ public class MatchScriptLocal : MonoBehaviour //by Robin
                 showWinScreen = false;
                 scriptmanager.GetComponent<ServerScript>().ReturnToLobby();
             }
+
+            //show scoreboard
+            if (Input.GetKey(KeyCode.Tab))
+                showScoreboard = true;
+            else
+                showScoreboard = false;
         }
     }
 
@@ -112,35 +119,12 @@ public class MatchScriptLocal : MonoBehaviour //by Robin
             GUILayout.EndHorizontal();
             GUILayout.EndArea();
         }
-        if (showScoreboard && !showWinScreen)
+        if (MatchStarted && showScoreboard && !showWinScreen)
         {
-            GUILayout.BeginArea(new Rect(Vector2.zero, new Vector2(Screen.width, Screen.height)));
-            GUILayout.BeginVertical();
-            GUILayout.FlexibleSpace();
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            List<GameObject> playerListBlue = PlayerList(0);
-            foreach (GameObject p in playerListBlue)
-            {
-                TeamMember tm = p.GetComponent<TeamMember>();
-                GUILayout.Label(tm.Name);
-                GUILayout.Space(32);
-                GUILayout.Label("K: " + tm.Kills.ToString());
-                GUILayout.Space(32);
-                GUILayout.Label("D: " + tm.Deaths.ToString());
-                GUILayout.BeginVertical();
-                GUILayout.FlexibleSpace();
-                GUILayout.EndVertical();
-            }
-            GUILayout.FlexibleSpace();
-            List<GameObject> playerListRed = PlayerList(1);
-            GUILayout.Label("");
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
-            GUILayout.FlexibleSpace();
-            GUILayout.EndVertical();
-            GUILayout.EndArea();
+            scoreboard.SetActive(true);
         }
+        else
+            scoreboard.SetActive(false);
     }
 
     /// <summary>

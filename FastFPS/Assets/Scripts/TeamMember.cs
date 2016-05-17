@@ -12,12 +12,14 @@ public class TeamMember : MonoBehaviour
     {
         if (stream.isWriting)
         {
+            stream.SendNext(Name);
             stream.SendNext(Team);
             stream.SendNext(Kills);
             stream.SendNext(Deaths);
         }
         else
         {
+            Name = (string)stream.ReceiveNext();
             Team = (int)stream.ReceiveNext();
             Kills = (int)stream.ReceiveNext();
             Deaths = (int)stream.ReceiveNext();

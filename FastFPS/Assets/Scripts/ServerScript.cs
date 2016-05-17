@@ -15,6 +15,7 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified (a lot) b
     bool teamSelected = false;
     public Material MaterialBlue;
     public Material MaterialRed;
+    public bool Mute = false;
 
 	// Use this for initialization
 	void Start ()
@@ -33,8 +34,8 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified (a lot) b
             //initialize shop
             GetComponent<ShopScript>().init();
             //start match
-            //GlobalObject.GetComponent<MatchScript>().Init();
-            //GlobalObject.GetComponent<MatchScript>().MatchStarted = true;
+            scriptManager.GetComponent<MatchScriptLocal>().Init();
+            scriptManager.GetComponent<MatchScriptLocal>().MatchStarted = true;
             
             doInit = false;
         }
@@ -71,6 +72,7 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified (a lot) b
                 PhotonNetwork.offlineMode = false;
                 Connect();
             }
+            Mute = GUILayout.Toggle(Mute, "Mute");
         }
         else if (!teamSelected)
         {
@@ -103,7 +105,7 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified (a lot) b
         //connect if online
         //PhotonNetwork.offlineMode = !Online;
         //if (Online)
-            PhotonNetwork.ConnectUsingSettings("Pew 1.1");
+            PhotonNetwork.ConnectUsingSettings("Pew 2.0");
     }
 	
     //photon connection
@@ -192,7 +194,6 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified (a lot) b
         player.transform.FindChild("PlayerBody").GetComponent<PlayerBodyScript>().SetLocal();
         player.GetComponent<TeamMember>().Name = PhotonNetwork.playerName;
         player.GetComponent<TeamMember>().Team = PlayerTeam;
-        scriptManager.GetComponent<MatchScriptLocal>().MatchStarted = true;
         //disable starting camera
         Camera2Disable.SetActive(false);
         //hide your player from your camera
@@ -216,6 +217,7 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified (a lot) b
                 else if (players[i].GetComponent<TeamMember>().Team == 1)
                     m = MaterialRed;
                 players[i].transform.FindChild("PlayerBody").FindChild("Body").GetComponent<MaterialApplier>().material = m;
+                players[i].transform.FindChild("PlayerBody").FindChild("WeaponRight").GetComponent<MaterialApplier>().material = m;
                 players[i].transform.FindChild("PlayerFeet").GetComponent<MaterialApplier>().material = m;
                 //Debug.Log("updated color to " + m.ToString());
             }

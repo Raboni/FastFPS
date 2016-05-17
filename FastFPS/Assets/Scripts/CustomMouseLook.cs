@@ -5,6 +5,7 @@ public class CustomMouseLook : MonoBehaviour //standard asset MouseLook script m
 {
     //public static GameObject player;
     private GameObject playerBody;
+    private GameObject weapon;
     private GameObject camera;
     private bool playerInit = false;
 
@@ -56,12 +57,17 @@ public class CustomMouseLook : MonoBehaviour //standard asset MouseLook script m
 
             playerBody.transform.localEulerAngles = new Vector3(-rotationY, playerBody.transform.localEulerAngles.y, 0);
         }
+
+        //shoot
+        if (Input.GetMouseButton(0))
+            playerBody.GetComponent<PlayerBodyScript>().Shoot();
     }
 
     void Init()
     {
         //set body and camera
         playerBody = ServerScript.player.transform.FindChild("PlayerBody").gameObject;
+        weapon = playerBody.transform.FindChild("WeaponRight").gameObject;
         camera = ServerScript.player.transform.FindChild("Main Camera").gameObject;
 
         // Make the rigid body not change rotation

@@ -39,19 +39,22 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
 	void Update ()
     {
         PlayerStats stats = transform.parent.GetComponent<PlayerStats>();
-        localPlayer = stats.clientPlayer;
+        //localPlayer = stats.clientPlayer;
         //transform.rotation.SetLookRotation(camera.transform.forward, transform.up);
 
         //update weapon model
-        transform.FindChild("WeaponRight").GetComponent<MeshFilter>().mesh = stats.EquipedRanged.Model;
+        GameObject weapon = transform.FindChild("WeaponRight").gameObject;
+        weapon.GetComponent<MeshFilter>().mesh = stats.EquipedRanged.Model;
         //transform.FindChild("WeaponLeft").GetComponent<MeshFilter>().mesh = stats.primaryMelee.Model;
+        //update weapon rotation
+        raycast = new Ray(camera.transform.position + camera.transform.forward * 2, camera.transform.forward);
+        Physics.Raycast(raycast, out rayHit);
+        weapon.transform.LookAt(rayHit.point);
+        weapon.transform.Rotate(0, 180, 0);
 
         //make time tick
         time += Time.deltaTime;
 
-        //shoot
-        if (Input.GetMouseButton(0))
-            Shoot();
         //reload
         if (stats.Ammo <= 0)
             Reload();
@@ -86,7 +89,8 @@ public class PlayerBodyScript : Photon.MonoBehaviour //by Robin
             Debug.Log("Pew!");
             time = 0f;
             stats.Ammo--;
-            PlaySound(GetComponentInParent<PlayerStats>().EquipedRanged.sound);
+            if (!scriptManager.GetComponent<ServerScript>().Mute)
+                PlaySound(GetComponentInParent<PlayerStats>().EquipedRanged.sound);
             //damage = stats.Damage;
             //bool kill = false;
             object[] hitParam = new object[1];
