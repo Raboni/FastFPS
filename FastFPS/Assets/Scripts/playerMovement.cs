@@ -39,7 +39,6 @@ public class playerMovement : MonoBehaviour //by Linus and Robin
         //jumpPower = player.GetComponent<PlayerStats>().JumpPower;
 
         Debug.Log("Movement Initialized");
-        Cursor.visible = false;
 	}
 	
 	// Update is called once per frame

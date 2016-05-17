@@ -9,7 +9,7 @@ public class ShopScript : MonoBehaviour //by Kevin and Robin
 
     public WeaponScript[] weaponArray;
 
-    bool playerSpawned;
+    public bool playerSpawned;
     bool Open = false;
 
 	// Use this for initialization
@@ -33,6 +33,10 @@ public class ShopScript : MonoBehaviour //by Kevin and Robin
             Cursor.visible = Open;
             Debug.Log("open: " + Open);
         }
+        if (Open)
+            Cursor.lockState = CursorLockMode.None;
+        else if (playerSpawned)
+            Cursor.lockState = CursorLockMode.Locked;
 	}
 
     //simple buy menu

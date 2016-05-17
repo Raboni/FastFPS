@@ -20,6 +20,7 @@ public class NetworkManager : Photon.MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Cursor.visible = !Cursor.visible;
+            Cursor.lockState = CursorLockMode.None;
             Application.Quit();
         }
 	}

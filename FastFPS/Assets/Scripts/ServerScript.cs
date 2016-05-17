@@ -185,6 +185,9 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified (a lot) b
     }*/
     private void SpawnPlayer()
     {
+        //lock and hide mouse
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         //create clientPlayer on the network
         player = PhotonNetwork.Instantiate("PlayerObjects", GetComponent<SpawnScript>().Respawn(PlayerTeam), Quaternion.identity, 0);
         player.GetComponent<playerMovement>().enabled = true;
@@ -204,7 +207,7 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified (a lot) b
         //disconnect
         PhotonNetwork.Disconnect();
         doInit = true;
-
+        GetComponent<ShopScript>().playerSpawned = false;
 
     }
     public void UpdateTeamColor()
