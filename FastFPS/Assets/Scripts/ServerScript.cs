@@ -125,8 +125,6 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified (a lot) b
     }
     void OnJoinedRoom()
     {
-        
-
         //initialize
         doInit = true;
 
@@ -201,7 +199,13 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified (a lot) b
     }
     public void ReturnToLobby()
     {
-        //GlobalObject.GetComponent<GlobalScript>().Reset();
+        //enable camera again
+        Camera2Disable.SetActive(false);
+        //disconnect
+        PhotonNetwork.Disconnect();
+        doInit = true;
+
+
     }
     public void UpdateTeamColor()
     {
