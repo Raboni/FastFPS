@@ -6,6 +6,7 @@ public class MatchScriptLocal : MonoBehaviour //by Robin
 {
     GameModeScript[] gamemodes;
     GameObject scriptmanager;
+    ScoreManager scoremanager;
     bool initialized = false;
 
     int currentMode = 1;
@@ -29,6 +30,7 @@ public class MatchScriptLocal : MonoBehaviour //by Robin
     public void Init()
     {
         scriptmanager = GameObject.FindGameObjectWithTag("ScriptManager");
+        scoremanager = GetComponent<ScoreManager>();
         gamemodes = scriptmanager.transform.FindChild("GameModes").GetComponents<GameModeScript>();
         initialized = true;
     }
@@ -80,11 +82,23 @@ public class MatchScriptLocal : MonoBehaviour //by Robin
                 scriptmanager.GetComponent<ServerScript>().ReturnToLobby();
             }
 
+            //update scoreboard
+            
+            GameObject[] playerArray = GameObject.FindGameObjectsWithTag("Player");
+            foreach (GameObject p in playerArray)
+            {
+                TeamMember tm = p.GetComponent<TeamMember>();
+                string username = tm.Name;
+                //if (tm.Kills != scoremanager.GetScore(username, "kills"))
+                    scoremanager.SetScore(username, "kills", tm.Kills);
+                //if (tm.Deaths != scoremanager.GetScore(username, "deaths"))
+                    scoremanager.SetScore(username, "deaths", tm.Deaths);
+            }
             //show scoreboard
             if (Input.GetKey(KeyCode.Tab))
-                showScoreboard = true;
+                scoreboard.SetActive(true);
             else
-                showScoreboard = false;
+                scoreboard.SetActive(false);
         }
     }
 
@@ -119,12 +133,6 @@ public class MatchScriptLocal : MonoBehaviour //by Robin
             GUILayout.EndHorizontal();
             GUILayout.EndArea();
         }
-        if (MatchStarted && showScoreboard && !showWinScreen)
-        {
-            scoreboard.SetActive(true);
-        }
-        else
-            scoreboard.SetActive(false);
     }
 
     /// <summary>

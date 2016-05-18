@@ -76,7 +76,7 @@ public class ScoreManager : MonoBehaviour {
 		return changeCounter;
 	}
 
-	public void DEBUG_ADD_KILL_TO_QUILL() {
+	/*public void DEBUG_ADD_KILL_TO_QUILL() {
 		ChangeScore("quill18", "kills", 1);
 	}
 	
@@ -93,6 +93,6 @@ public class ScoreManager : MonoBehaviour {
 		
 		
 		Debug.Log (  GetScore("quill18", "kills") );
-	}
+	}*/
 
 }
