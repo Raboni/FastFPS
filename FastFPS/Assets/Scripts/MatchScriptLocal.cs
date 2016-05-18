@@ -89,10 +89,8 @@ public class MatchScriptLocal : MonoBehaviour //by Robin
             {
                 TeamMember tm = p.GetComponent<TeamMember>();
                 string username = tm.Name;
-                //if (tm.Kills != scoremanager.GetScore(username, "kills"))
-                    scoremanager.SetScore(username, "kills", tm.Kills);
-                //if (tm.Deaths != scoremanager.GetScore(username, "deaths"))
-                    scoremanager.SetScore(username, "deaths", tm.Deaths);
+                scoremanager.SetScore(username, "kills", tm.Kills);
+                scoremanager.SetScore(username, "deaths", tm.Deaths);
             }
             //show scoreboard
             if (Input.GetKey(KeyCode.Tab))

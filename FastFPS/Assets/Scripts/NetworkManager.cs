@@ -17,11 +17,17 @@ public class NetworkManager : Photon.MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Escape))
         {
-            Cursor.visible = !Cursor.visible;
+            Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
             Application.Quit();
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            GetComponent<ServerScript>().ReturnToLobby();
         }
 	}
 

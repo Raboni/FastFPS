@@ -12,6 +12,8 @@ public class ShopScript : MonoBehaviour //by Kevin and Robin
     public bool playerSpawned;
     bool Open = false;
 
+    public GameObject crosshair;
+
 	// Use this for initialization
 	public void init ()
     {
@@ -20,6 +22,7 @@ public class ShopScript : MonoBehaviour //by Kevin and Robin
         playerStats = ServerScript.player.GetComponent<PlayerStats>();
         scriptmanager = GameObject.FindGameObjectWithTag("ScriptManager");
         weaponArray = scriptmanager.transform.FindChild("Weapons").GetComponents<WeaponScript>();
+        crosshair.SetActive(true);
 
         Debug.Log("shop init");
 	}
@@ -31,9 +34,10 @@ public class ShopScript : MonoBehaviour //by Kevin and Robin
         {
             Open = !Open;
             Cursor.visible = Open;
+            crosshair.SetActive(!Open);
             Debug.Log("open: " + Open);
         }
-        if (Open)
+        if (Open || !playerSpawned)
             Cursor.lockState = CursorLockMode.None;
         else if (playerSpawned)
             Cursor.lockState = CursorLockMode.Locked;

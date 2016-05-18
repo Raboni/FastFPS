@@ -2,7 +2,8 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class PlayerScoreList : MonoBehaviour {
+public class PlayerScoreList : MonoBehaviour //by Quill18 modified by Robin
+{
 
 	public GameObject playerScoreEntryPrefab;
 
@@ -45,7 +46,6 @@ public class PlayerScoreList : MonoBehaviour {
 			go.transform.Find ("Username").GetComponent<Text>().text = name;
 			go.transform.Find ("Kills").GetComponent<Text>().text = scoreManager.GetScore(name, "kills").ToString();
 			go.transform.Find ("Deaths").GetComponent<Text>().text = scoreManager.GetScore(name, "deaths").ToString();
-			//go.transform.Find ("Assists").GetComponent<Text>().text = scoreManager.GetScore(name, "assists").ToString();
 		}
 	}
 }

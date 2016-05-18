@@ -143,23 +143,6 @@ public class PlayerStats : MonoBehaviour //by Robin and Kevin
     
     private void Respawn()
     {
-        //get team
-        /*int team;
-        switch (clientPlayer.GetTeam())
-        {
-            case PunTeams.Team.none:
-                team = 0;
-                break;
-            case PunTeams.Team.blue:
-                team = 1;
-                break;
-            case PunTeams.Team.red:
-                team = 2;
-                break;
-            default:
-                team = 0;
-                break;
-        }*/
         //respawn
         transform.FindChild("PlayerFeet").position = GameObject.FindGameObjectWithTag("ScriptManager").GetComponent<SpawnScript>().Respawn(GetComponent<TeamMember>().Team);
         Debug.Log("Respawn");

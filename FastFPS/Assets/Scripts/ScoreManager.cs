@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class ScoreManager : MonoBehaviour {
+public class ScoreManager : MonoBehaviour //by Quill18 modified by Robin
+{
 
 	// The map we're building is going to look like:
 	//
@@ -60,6 +61,12 @@ public class ScoreManager : MonoBehaviour {
 		int currScore = GetScore(username, scoreType);
 		SetScore(username, scoreType, currScore + amount);
 	}
+
+    public void RemovePlayer(string username)
+    {
+        Init();
+        playerScores.Remove(username);
+    }
 
 	public string[] GetPlayerNames() {
 		Init ();

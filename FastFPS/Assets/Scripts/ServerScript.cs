@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class ServerScript : Photon.MonoBehaviour //by Quill18 modified (a lot) by Robin
 {
@@ -72,6 +73,12 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified (a lot) b
                 PhotonNetwork.offlineMode = false;
                 Connect();
             }
+            else if (GUILayout.Button("Quit"))
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                Application.Quit();
+            }
             Mute = GUILayout.Toggle(Mute, "Mute");
         }
         else if (!teamSelected)
@@ -138,58 +145,17 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified (a lot) b
     {
         //find other clientPlayer with id and destroy him
         PhotonNetwork.DestroyPlayerObjects(other);
-        //GlobalObject.GetComponent<GlobalScript>().RemovePlayer(other);
+        GetComponent<ScoreManager>().RemovePlayer(other.name);
     }
 
-    /*private void InitGlobal()
-    {
-        if (GlobalObject == null)
-        {
-            GameObject[] g = GameObject.FindGameObjectsWithTag("Global");
-            //GameObject g = GameObject.FindGameObjectWithTag("Global");
-            if (g.Length > 0)
-            {
-                GlobalObject = g[0];
-                Debug.Log("Found global later: " + g[0].name + "(" + g.Length + ")");
-            }
-            else
-            {
-                GlobalObject = PhotonNetwork.Instantiate("GlobalObject", Vector3.zero, Quaternion.identity, 0);
-                Debug.Log("Created global");
-            }
-        }
-        //add player
-        GlobalObject.GetComponent<GlobalScript>().AddPlayer(PhotonNetwork.player);
-
-        Debug.Log("Global Initialized");
-    }*/
-    /*private void selectTeam()
-    {
-        GlobalScript global = GlobalObject.GetComponent<GlobalScript>();
-        global.UpdateTeamPlayerAmount();
-        //select team
-        if (global.TeamPlayerAmount[0] > global.TeamPlayerAmount[1])
-        {
-            PlayerTeam = 1;
-            PhotonNetwork.player.SetTeam(PunTeams.Team.red);
-            player.transform.FindChild("PlayerBody").FindChild("Body").GetComponent<MaterialApplier>().material = MaterialRed;
-            player.transform.FindChild("PlayerFeet").GetComponent<MaterialApplier>().material = MaterialRed;
-        }
-        else if (global.TeamPlayerAmount[1] >= global.TeamPlayerAmount[0])
-        {
-            PlayerTeam = 0;
-            PhotonNetwork.player.SetTeam(PunTeams.Team.blue);
-            player.transform.FindChild("PlayerBody").FindChild("Body").GetComponent<MaterialApplier>().material = MaterialBlue;
-            player.transform.FindChild("PlayerFeet").GetComponent<MaterialApplier>().material = MaterialBlue;
-        }
-    }*/
     private void SpawnPlayer()
     {
         //lock and hide mouse
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         //create clientPlayer on the network
-        player = PhotonNetwork.Instantiate("PlayerObjects", GetComponent<SpawnScript>().Respawn(PlayerTeam), Quaternion.identity, 0);
+        player = PhotonNetwork.Instantiate("PlayerObjects", Vector3.zero, Quaternion.identity, 0);
+        player.transform.FindChild("PlayerFeet").position = GetComponent<SpawnScript>().Respawn(PlayerTeam);
         player.GetComponent<playerMovement>().enabled = true;
         player.GetComponent<PlayerStats>().clientPlayer = PhotonNetwork.player;
         player.transform.FindChild("PlayerBody").GetComponent<PlayerBodyScript>().SetLocal();
@@ -203,12 +169,17 @@ public class ServerScript : Photon.MonoBehaviour //by Quill18 modified (a lot) b
     public void ReturnToLobby()
     {
         //enable camera again
-        Camera2Disable.SetActive(false);
+        Camera2Disable.SetActive(true);
         //disconnect
         PhotonNetwork.Disconnect();
-        doInit = true;
+        //reset
+        doInit = false;
+        teamSelected = false;
         GetComponent<ShopScript>().playerSpawned = false;
-
+        GetComponent<ShopScript>().crosshair.SetActive(false);
+        GetComponent<MatchScriptLocal>().MatchStarted = false;
+        GetComponent<ScoreManager>().Reset();
+        SceneManager.LoadScene("Map1");
     }
     public void UpdateTeamColor()
     {
